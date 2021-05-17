@@ -11,7 +11,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new WatchedClock(), config);
+        return new IOSApplication(new WatchedClock(new IOSFormatter()), config);
     }
 
     public static void main(String[] argv) {

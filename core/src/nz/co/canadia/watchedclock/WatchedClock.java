@@ -1,31 +1,42 @@
 package nz.co.canadia.watchedclock;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Date;
+
 public class WatchedClock extends ApplicationAdapter {
+	private final Formatter formatter;
 	SpriteBatch batch;
-	Texture img;
-	
+	private BitmapFont font;
+	private Date currentTime;
+
+	public WatchedClock(Formatter formatter) {
+		this.formatter = formatter;
+	}
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+
+		font = new BitmapFont();
+
+		currentTime = new Date();
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		font.draw(batch, formatter.formatCurrentTime(currentTime), 100, 100);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		font.dispose();
 	}
 }
