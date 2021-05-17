@@ -3,16 +3,15 @@ package nz.co.canadia.watchedclock.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
+
+import nz.co.canadia.watchedclock.Constants;
 import nz.co.canadia.watchedclock.WatchedClock;
 
 public class HtmlLauncher extends GwtApplication {
 
         @Override
         public GwtApplicationConfiguration getConfig () {
-                // Resizable application, uses available space in browser
-                return new GwtApplicationConfiguration(true);
-                // Fixed size application:
-                //return new GwtApplicationConfiguration(480, 320);
+                return new GwtApplicationConfiguration(Constants.HTML_WIDTH, Constants.HTML_HEIGHT);
         }
 
         @Override
