@@ -22,10 +22,12 @@ public class ClockScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
+        // CLOCK
         Label clockLabel = new Label(game.formatter.formatCurrentTime(game.getCurrentTime()), game.skin, "default");
         table.add(clockLabel);
         table.row();
 
+        // ALARM
         SelectBox<String> hourSelectBox = new SelectBox<>(game.skin, "default");
         Array<String> hourStringArray = new Array<>(12);
         hourStringArray.add("12");
