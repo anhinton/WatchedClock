@@ -9,5 +9,8 @@ public class Constants {
     public static final int HTML_WIDTH = DESKTOP_WIDTH;
     public static final int HTML_HEIGHT = DESKTOP_HEIGHT;
 
+    public static final int WORLD_WIDTH = 360;
+    public static final int WORLD_HEIGHT = 480;
+
     public static final String CLOCK_TIME_FORMAT = "h:mm a";
 }

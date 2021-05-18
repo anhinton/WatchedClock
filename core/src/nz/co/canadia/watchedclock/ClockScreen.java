@@ -4,23 +4,52 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class ClockScreen implements Screen {
     private final Stage stage;
-    private final WatchedClock game;
 
     public ClockScreen(WatchedClock game) {
-        this.game = game;
 
-        Viewport viewport = new FitViewport(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+        Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
         Label clockLabel = new Label(game.formatter.formatCurrentTime(game.getCurrentTime()), game.skin, "default");
-        clockLabel.setPosition(100, 100);
-        stage.addActor(clockLabel);
+        table.add(clockLabel);
+        table.row();
+
+        SelectBox<String> hourSelectBox = new SelectBox<>(game.skin, "default");
+        Array<String> hourStringArray = new Array<>(12);
+        hourStringArray.add("12");
+        for (int i = 1; i < 12; i++) {
+            hourStringArray.add(String.valueOf(i));
+        }
+        hourSelectBox.setItems(hourStringArray);
+        table.add(hourSelectBox);
+
+        SelectBox<String> minuteSelectBox = new SelectBox<>(game.skin, "default");
+        Array<String> minuteStringArray = new Array<>(12);
+        for (int i = 0; i < 12; i++) {
+            // TODO: zero pad minutes
+            minuteStringArray.add(String.valueOf(i * 5));
+        }
+        minuteSelectBox.setItems(minuteStringArray);
+        table.add(minuteSelectBox);
+
+        SelectBox<String> meridianSelectBox = new SelectBox<>(game.skin, "default");
+        // TODO: Make AM/PM and localized thingy
+        meridianSelectBox.setItems("AM", "PM");
+        table.add(meridianSelectBox);
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
