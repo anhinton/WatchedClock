@@ -1,11 +1,13 @@
 package nz.co.canadia.watchedclock;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class IOSFormatter implements Formatter {
     @Override
     public String formatCurrentTime(Date date) {
-        return DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
+        SimpleDateFormat formatter = new SimpleDateFormat(Constants.CLOCK_TIME_FORMAT, Locale.getDefault());
+        return formatter.format(date);
     }
 }
