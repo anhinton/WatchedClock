@@ -10,4 +10,9 @@ public class AndroidFormatter implements Formatter {
         SimpleDateFormat formatter = new SimpleDateFormat(Constants.CLOCK_TIME_FORMAT, Locale.getDefault());
         return formatter.format(date);
     }
+
+    @Override
+    public String zeroPadMinutes(int minutes) {
+        return String.format(Locale.getDefault(), "%02d", minutes);
+    }
 }

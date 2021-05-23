@@ -4,4 +4,6 @@ import java.util.Date;
 
 public interface Formatter {
     String formatCurrentTime(Date date);
+
+    String zeroPadMinutes(int minutes);
 }

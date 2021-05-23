@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Locale;
+
 public class ClockScreen implements Screen {
     private final Stage stage;
 
@@ -24,7 +26,7 @@ public class ClockScreen implements Screen {
 
         // CLOCK
         Label clockLabel = new Label(game.formatter.formatCurrentTime(game.getCurrentTime()), game.skin, "default");
-        table.add(clockLabel);
+        table.add(clockLabel).colspan(3);
         table.row();
 
         // ALARM
@@ -40,14 +42,12 @@ public class ClockScreen implements Screen {
         SelectBox<String> minuteSelectBox = new SelectBox<>(game.skin, "default");
         Array<String> minuteStringArray = new Array<>(12);
         for (int i = 0; i < 12; i++) {
-            // TODO: zero pad minutes
-            minuteStringArray.add(String.valueOf(i * 5));
+            minuteStringArray.add(game.formatter.zeroPadMinutes(i * 5));
         }
         minuteSelectBox.setItems(minuteStringArray);
         table.add(minuteSelectBox);
 
         SelectBox<String> meridianSelectBox = new SelectBox<>(game.skin, "default");
-        // TODO: Make AM/PM and localized thingy
         meridianSelectBox.setItems("AM", "PM");
         table.add(meridianSelectBox);
 
