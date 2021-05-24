@@ -18,4 +18,19 @@ public class DesktopFormatter implements Formatter {
     public String zeroPadMinutes(int minutes) {
         return String.format(Locale.getDefault(), "%02d", minutes);
     }
+
+    @Override
+    public String getAlarmHour(Date alarmTime) {
+        return new SimpleDateFormat("h", Locale.US).format(alarmTime);
+    }
+
+    @Override
+    public String getAlarmMinute(Date alarmTime) {
+        return new SimpleDateFormat("mm", Locale.US).format(alarmTime);
+    }
+
+    @Override
+    public String getAlarmPeriod(Date alarmTime) {
+        return new SimpleDateFormat("a", Locale.US).format(alarmTime);
+    }
 }

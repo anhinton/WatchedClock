@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,23 +26,13 @@ public class AlarmScreen implements Screen {
     private final SelectBox<String> periodSelectBox;
     private final WatchedClock game;
     private final TextButton setAlarmButton;
-    private String alarmHour;
-    private String alarmMinute;
-    private String alarmPeriod;
+    private Date alarmTime;
     private boolean alarmIsSet;
 
     public AlarmScreen(WatchedClock game) {
         this.game = game;
-        alarmHour = game.preferences.getString("alarmHour", Constants.ALARM_HOUR_DEFAULT);
-        alarmMinute = game.preferences.getString("alarmMinute", Constants.ALARM_MINUTE_DEFAULT);
-        alarmPeriod = game.preferences.getString("alarmPeriod", Constants.ALARM_PERIOD_DEFAULT);
+        alarmTime = new Date(game.preferences.getLong("alarmTime", 0));
         alarmIsSet = game.preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
-
-        // TODO: move this to Formatter as SimpleDateFormat is not supported in GWT
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.US);
-        String alarmString = dateFormat.format(new Date()) + " " + alarmHour + ":" + alarmMinute + " " + alarmPeriod;
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US);
-        Date alarmTime = dateTimeFormat.parse(alarmString, new ParsePosition(0));
 
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
@@ -57,7 +48,7 @@ public class AlarmScreen implements Screen {
             hourStringArray.add(String.valueOf(i));
         }
         hourSelectBox.setItems(hourStringArray);
-        hourSelectBox.setSelected(alarmHour);
+        hourSelectBox.setSelected(game.formatter.getAlarmHour(alarmTime));
         table.add(hourSelectBox);
 
         minuteSelectBox = new SelectBox<>(game.skin, "default");
@@ -66,12 +57,12 @@ public class AlarmScreen implements Screen {
             minuteStringArray.add(game.formatter.zeroPadMinutes(i * 5));
         }
         minuteSelectBox.setItems(minuteStringArray);
-        minuteSelectBox.setSelected(alarmMinute);
+        minuteSelectBox.setSelected(game.formatter.getAlarmMinute(alarmTime));
         table.add(minuteSelectBox);
 
         periodSelectBox = new SelectBox<>(game.skin, "default");
         periodSelectBox.setItems("AM", "PM");
-        periodSelectBox.setSelected(alarmPeriod);
+        periodSelectBox.setSelected(game.formatter.getAlarmPeriod(alarmTime));
         table.add(periodSelectBox);
         table.row();
 
@@ -114,14 +105,22 @@ public class AlarmScreen implements Screen {
     }
 
     private void setAlarmTime() {
-        alarmHour = hourSelectBox.getSelected();
-        alarmMinute = minuteSelectBox.getSelected();
-        alarmPeriod = periodSelectBox.getSelected();
+        // TODO: do this formatting in Formatter so I can handle GWT variation
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.US);
+        String alarmString = dateFormat.format(new Date()) + " " + hourSelectBox.getSelected()
+                + ":" + minuteSelectBox.getSelected() + " " + periodSelectBox.getSelected();
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US);
+        alarmTime = dateTimeFormat.parse(alarmString, new ParsePosition(0));
+        // TODO: this calculation also needs to happen in Formatter
+        if (alarmTime.before(game.getCurrentTime())) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(alarmTime);
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+            alarmTime = cal.getTime();
+        }
         alarmIsSet = true;
         setAlarmButton.setText("Disable alarm");
-        game.preferences.putString("alarmHour", alarmHour);
-        game.preferences.putString("alarmMinute", alarmMinute);
-        game.preferences.putString("alarmPeriod", alarmPeriod);
+        game.preferences.putLong("alarmTime", alarmTime.getTime());
         game.preferences.putBoolean("alarmIsSet", alarmIsSet);
         game.preferences.flush();
     }
