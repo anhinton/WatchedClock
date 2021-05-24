@@ -2,29 +2,15 @@ package nz.co.canadia.watchedclock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class ClockScreen implements Screen {
     private final Stage stage;
-    private String alarmTime;
 
     public ClockScreen(WatchedClock game) {
 
@@ -39,47 +25,7 @@ public class ClockScreen implements Screen {
         table.add(clockLabel).colspan(3);
         table.row();
 
-        // ALARM
-        final SelectBox<String> hourSelectBox = new SelectBox<>(game.skin, "default");
-        Array<String> hourStringArray = new Array<>(12);
-        hourStringArray.add("12");
-        for (int i = 1; i < 12; i++) {
-            hourStringArray.add(String.valueOf(i));
-        }
-        hourSelectBox.setItems(hourStringArray);
-        table.add(hourSelectBox);
-
-        final SelectBox<String> minuteSelectBox = new SelectBox<>(game.skin, "default");
-        Array<String> minuteStringArray = new Array<>(12);
-        for (int i = 0; i < 12; i++) {
-            minuteStringArray.add(game.formatter.zeroPadMinutes(i * 5));
-        }
-        minuteSelectBox.setItems(minuteStringArray);
-        table.add(minuteSelectBox);
-
-        final SelectBox<String> am_pmSelectBox = new SelectBox<>(game.skin, "default");
-        am_pmSelectBox.setItems("AM", "PM");
-        table.add(am_pmSelectBox);
-        table.row();
-
-        TextButton setAlarmButton = new TextButton("Set alarm", game.skin, "default");
-        setAlarmButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                String alarmTime =
-                        hourSelectBox.getSelected() + ":" + minuteSelectBox.getSelected() + " " + am_pmSelectBox.getSelected();
-                setAlarmTime(alarmTime);
-            }
-        });
-
-
-        table.add(setAlarmButton).colspan(3);
-
         Gdx.input.setInputProcessor(stage);
-    }
-
-    private void setAlarmTime(String alarmTime) {
-        this.alarmTime = alarmTime;
     }
 
     @Override
