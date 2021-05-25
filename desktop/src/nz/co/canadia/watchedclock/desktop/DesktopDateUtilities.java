@@ -11,7 +11,7 @@ import nz.co.canadia.watchedclock.DateUtilities;
 public class DesktopDateUtilities implements DateUtilities {
     @Override
     public String formatDate(String pattern, Date date) {
-        return new SimpleDateFormat(pattern, Locale.US).format(date);
+        return new SimpleDateFormat(pattern, Locale.getDefault()).format(date);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class DesktopDateUtilities implements DateUtilities {
 
     @Override
     public Date parseDate(String pattern, String text) {
-        return new SimpleDateFormat(pattern, Locale.US).parse(text, new ParsePosition(0));
+        return new SimpleDateFormat(pattern, Locale.getDefault()).parse(text, new ParsePosition(0));
     }
 }

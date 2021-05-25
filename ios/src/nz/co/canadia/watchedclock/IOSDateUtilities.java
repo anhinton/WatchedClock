@@ -9,7 +9,7 @@ import java.util.Locale;
 public class IOSDateUtilities implements DateUtilities {
     @Override
     public String formatDate(String pattern, Date date) {
-        return new SimpleDateFormat(pattern, Locale.US).format(date);
+        return new SimpleDateFormat(pattern, Locale.getDefault()).format(date);
     }
 
     @Override
@@ -19,7 +19,7 @@ public class IOSDateUtilities implements DateUtilities {
 
     @Override
     public Date parseDate(String pattern, String text) {
-        return new SimpleDateFormat(pattern, Locale.US).parse(text, new ParsePosition(0));
+        return new SimpleDateFormat(pattern, Locale.getDefault()).parse(text, new ParsePosition(0));
     }
 
     @Override
