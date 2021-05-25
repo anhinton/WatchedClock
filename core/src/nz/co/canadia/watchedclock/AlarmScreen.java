@@ -23,6 +23,7 @@ public class AlarmScreen implements Screen {
     private final SelectBox<String> periodSelectBox;
     private final WatchedClock game;
     private final TextButton setAlarmButton;
+    private final Table table;
     private Date alarmTime;
     private boolean alarmIsSet;
 
@@ -33,12 +34,14 @@ public class AlarmScreen implements Screen {
 
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
-        Table table = new Table();
+        table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
         // ALARM
-        Label temp = new Label(alarmTime.toString(), game.skin, "default");
+        Label temp = new Label(
+                "Alarm time: " + game.dateUtilities.formatDate(Constants.DATE_TIME_FORMAT, alarmTime),
+                game.skin, "default");
         table.add(temp).colspan(3);
         table.row();
 
@@ -62,16 +65,16 @@ public class AlarmScreen implements Screen {
         table.add(minuteSelectBox);
 
         periodSelectBox = new SelectBox<>(game.skin, "default");
-        periodSelectBox.setItems("AM", "PM");
+        periodSelectBox.setItems(game.bundle.get("alarmAm"), game.bundle.get("alarmPm"));
         periodSelectBox.setSelected(game.dateUtilities.formatDate("a", alarmTime));
         table.add(periodSelectBox);
         table.row();
 
         String alarmButtonText;
         if (alarmIsSet) {
-            alarmButtonText = "Disable alarm";
+            alarmButtonText = game.bundle.get("alarmButtonDisable");
         } else {
-            alarmButtonText = "Set alarm";
+            alarmButtonText = game.bundle.get("alarmButtonSet");
         }
         setAlarmButton = new TextButton(alarmButtonText, game.skin, "default");
         setAlarmButton.addListener(new ChangeListener() {
@@ -88,6 +91,9 @@ public class AlarmScreen implements Screen {
         if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
             playAlarm();
         } else {
+            Label alarmLabel = new Label("EVERYTHING IS NORMAL", game.skin, "default");
+            table.row();
+            table.add(alarmLabel).colspan(3);
             Gdx.app.log("AlarmScreen", "EVERYTHING IS NORMAL");
         }
     }
@@ -102,6 +108,9 @@ public class AlarmScreen implements Screen {
 
     private void playAlarm() {
         unsetAlarm();
+        Label alarmLabel = new Label("THIS IS AN ALARM", game.skin, "default");
+        table.row();
+        table.add(alarmLabel).colspan(3);
         Gdx.app.log("AlarmScreen", "THIS IS AN ALARM");
     }
 
@@ -115,7 +124,7 @@ public class AlarmScreen implements Screen {
             alarmTime = game.dateUtilities.addDays(alarmTime, 1);
         }
         alarmIsSet = true;
-        setAlarmButton.setText("Disable alarm");
+        setAlarmButton.setText(game.bundle.get("alarmButtonDisable"));
         game.preferences.putLong("alarmTime", alarmTime.getTime());
         game.preferences.putBoolean("alarmIsSet", alarmIsSet);
         game.preferences.flush();
@@ -123,7 +132,7 @@ public class AlarmScreen implements Screen {
 
     private void unsetAlarm() {
         alarmIsSet = false;
-        setAlarmButton.setText("Set alarm");
+        setAlarmButton.setText(game.bundle.get("alarmButtonSet"));
         game.preferences.putBoolean("alarmIsSet", alarmIsSet);
         game.preferences.flush();
     }

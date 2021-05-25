@@ -6,12 +6,14 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.Date;
 
 public class WatchedClock extends Game {
 	AssetManager manager;
 	SpriteBatch batch;
+	I18NBundle bundle;
 	DateUtilities dateUtilities;
 	Preferences preferences;
 	Skin skin;
@@ -30,8 +32,10 @@ public class WatchedClock extends Game {
 		preferences = Gdx.app.getPreferences(Constants.PREFERENCES_PATH);
 
 		manager.load("skin/uiskin.json", Skin.class);
+		manager.load("i18n/Bundle", I18NBundle.class);
 		manager.finishLoading();
 
+		bundle = manager.get("i18n/Bundle", I18NBundle.class);
 		skin = manager.get("skin/uiskin.json", Skin.class);
 
 		this.setScreen(new AlarmScreen(this));
