@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -13,11 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class AlarmScreen implements Screen {
     private final Stage stage;
@@ -41,6 +38,10 @@ public class AlarmScreen implements Screen {
         stage.addActor(table);
 
         // ALARM
+        Label temp = new Label(alarmTime.toString(), game.skin, "default");
+        table.add(temp).colspan(3);
+        table.row();
+
         hourSelectBox = new SelectBox<>(game.skin, "default");
         Array<String> hourStringArray = new Array<>(12);
         hourStringArray.add("12");
@@ -48,21 +49,21 @@ public class AlarmScreen implements Screen {
             hourStringArray.add(String.valueOf(i));
         }
         hourSelectBox.setItems(hourStringArray);
-        hourSelectBox.setSelected(game.formatter.getAlarmHour(alarmTime));
+        hourSelectBox.setSelected(game.dateUtilities.formatDate("h", alarmTime));
         table.add(hourSelectBox);
 
         minuteSelectBox = new SelectBox<>(game.skin, "default");
         Array<String> minuteStringArray = new Array<>(12);
         for (int i = 0; i < 12; i++) {
-            minuteStringArray.add(game.formatter.zeroPadMinutes(i * 5));
+            minuteStringArray.add(game.dateUtilities.zeroPadMinutes(i * 5));
         }
         minuteSelectBox.setItems(minuteStringArray);
-        minuteSelectBox.setSelected(game.formatter.getAlarmMinute(alarmTime));
+        minuteSelectBox.setSelected(game.dateUtilities.formatDate("mm", alarmTime));
         table.add(minuteSelectBox);
 
         periodSelectBox = new SelectBox<>(game.skin, "default");
         periodSelectBox.setItems("AM", "PM");
-        periodSelectBox.setSelected(game.formatter.getAlarmPeriod(alarmTime));
+        periodSelectBox.setSelected(game.dateUtilities.formatDate("a", alarmTime));
         table.add(periodSelectBox);
         table.row();
 
@@ -105,18 +106,13 @@ public class AlarmScreen implements Screen {
     }
 
     private void setAlarmTime() {
-        // TODO: do this formatting in Formatter so I can handle GWT variation
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.US);
-        String alarmString = dateFormat.format(new Date()) + " " + hourSelectBox.getSelected()
-                + ":" + minuteSelectBox.getSelected() + " " + periodSelectBox.getSelected();
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US);
-        alarmTime = dateTimeFormat.parse(alarmString, new ParsePosition(0));
-        // TODO: this calculation also needs to happen in Formatter
+        String alarmText = game.dateUtilities.formatDate(Constants.DATE_FORMAT, new Date())
+                + " " + hourSelectBox.getSelected()
+                + ":" + minuteSelectBox.getSelected()
+                + " " + periodSelectBox.getSelected();
+        alarmTime = game.dateUtilities.parseDate(Constants.DATE_TIME_FORMAT, alarmText);
         if (alarmTime.before(game.getCurrentTime())) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(alarmTime);
-            cal.add(Calendar.DAY_OF_MONTH, 1);
-            alarmTime = cal.getTime();
+            alarmTime = game.dateUtilities.addDays(alarmTime, 1);
         }
         alarmIsSet = true;
         setAlarmButton.setText("Disable alarm");

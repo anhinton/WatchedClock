@@ -21,7 +21,9 @@ public class ClockScreen implements Screen {
         stage.addActor(table);
 
         // CLOCK
-        Label clockLabel = new Label(game.formatter.formatCurrentTime(game.getCurrentTime()), game.skin, "default");
+        Label clockLabel = new Label(
+                game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()),
+                game.skin, "default");
         table.add(clockLabel).colspan(3);
         table.row();
 

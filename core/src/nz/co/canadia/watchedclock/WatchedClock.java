@@ -12,13 +12,13 @@ import java.util.Date;
 public class WatchedClock extends Game {
 	AssetManager manager;
 	SpriteBatch batch;
-	Formatter formatter;
+	DateUtilities dateUtilities;
 	Preferences preferences;
 	Skin skin;
 	private Date currentTime;
 
-	public WatchedClock(Formatter formatter) {
-		this.formatter = formatter;
+	public WatchedClock(DateUtilities dateUtilities) {
+		this.dateUtilities = dateUtilities;
 	}
 
 	@Override
