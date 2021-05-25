@@ -27,7 +27,7 @@ public class AlarmScreen implements Screen {
     private Date alarmTime;
     private boolean alarmIsSet;
 
-    public AlarmScreen(WatchedClock game) {
+    public AlarmScreen(final WatchedClock game) {
         this.game = game;
         alarmTime = new Date(game.preferences.getLong("alarmTime", 0));
         alarmIsSet = game.preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
@@ -70,13 +70,13 @@ public class AlarmScreen implements Screen {
         table.add(periodSelectBox);
         table.row();
 
-        String alarmButtonText;
+        String setAlarmButtonText;
         if (alarmIsSet) {
-            alarmButtonText = game.bundle.get("alarmButtonDisable");
+            setAlarmButtonText = game.bundle.get("alarmButtonDisable");
         } else {
-            alarmButtonText = game.bundle.get("alarmButtonSet");
+            setAlarmButtonText = game.bundle.get("alarmButtonSet");
         }
-        setAlarmButton = new TextButton(alarmButtonText, game.skin, "default");
+        setAlarmButton = new TextButton(setAlarmButtonText, game.skin, "default");
         setAlarmButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -85,6 +85,9 @@ public class AlarmScreen implements Screen {
         });
 
         table.add(setAlarmButton).colspan(3);
+        table.row();
+
+        table.add(new MenuButtons(game)).colspan(3);
 
         Gdx.input.setInputProcessor(stage);
 

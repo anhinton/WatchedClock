@@ -27,6 +27,8 @@ public class ClockScreen implements Screen {
         table.add(clockLabel).colspan(3);
         table.row();
 
+        table.add(new MenuButtons(game));
+
         Gdx.input.setInputProcessor(stage);
     }
 
