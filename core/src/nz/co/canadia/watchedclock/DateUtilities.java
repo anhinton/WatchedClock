@@ -10,4 +10,6 @@ public interface DateUtilities {
     String zeroPadMinutes(int minutes);
 
     Date addDays(Date date, int i);
+
+    String zeroPadMilliseconds(int milliseconds);
 }

@@ -25,5 +25,14 @@ public class MenuButtons extends Table  {
             }
         });
         this.add(alarmButton);
+
+        TextButton stopwatchButton = new TextButton(game.bundle.get("stopwatchButton"), game.skin, "default");
+        stopwatchButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new StopwatchScreen(game));
+            }
+        });
+        this.add(stopwatchButton);
     }
 }

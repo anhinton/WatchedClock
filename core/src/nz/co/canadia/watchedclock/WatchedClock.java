@@ -42,7 +42,7 @@ public class WatchedClock extends Game {
 		bundle = manager.get("i18n/Bundle", I18NBundle.class);
 		skin = manager.get("skin/uiskin.json", Skin.class);
 
-		this.setScreen(new AlarmScreen(this));
+		this.setScreen(new StopwatchScreen(this));
 	}
 
 	@Override
