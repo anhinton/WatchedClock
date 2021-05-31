@@ -39,12 +39,6 @@ public class AlarmScreen implements Screen {
         stage.addActor(table);
 
         // ALARM
-        Label temp = new Label(
-                "Alarm time: " + game.dateUtilities.formatDate(Constants.DATE_TIME_FORMAT, alarmTime),
-                game.skin, "default");
-        table.add(temp).colspan(3);
-        table.row();
-
         hourSelectBox = new SelectBox<>(game.skin, "default");
         Array<String> hourStringArray = new Array<>(12);
         hourStringArray.add("12");
