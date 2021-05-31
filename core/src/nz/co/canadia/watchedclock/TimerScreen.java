@@ -18,9 +18,9 @@ import java.util.Date;
 
 public class TimerScreen implements Screen {
     private final Stage stage;
-    private final SelectBox<String> hourSelectBox;
-    private final SelectBox<String> minuteSelectBox;
-    private final SelectBox<String> secondSelectBox;
+    private SelectBox<String> hourSelectBox;
+    private SelectBox<String> minuteSelectBox;
+    private SelectBox<String> secondSelectBox;
     private final WatchedClock game;
     private final Table table;
     private boolean timerIsRunning;
@@ -28,6 +28,7 @@ public class TimerScreen implements Screen {
     private int timerMinutes;
     private int timerSeconds;
     private Date timerTarget;
+    private long timerRemaining;
 
     public TimerScreen(final WatchedClock game) {
         this.game = game;
@@ -43,7 +44,24 @@ public class TimerScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        // TIMER
+        if (timerIsRunning) {
+            timerRemaining = timerTarget.getTime() - new Date().getTime();
+            showTimer();
+        } else {
+            timerRemaining = game.preferences.getLong("timerRemaining", 0);
+            if (timerRemaining > 0) {
+                showTimer();
+            } else {
+                showInputBoxes();
+            }
+        }
+
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private void showInputBoxes() {
+        table.clear();
+
         hourSelectBox = new SelectBox<>(game.skin, "default");
         final Array<String> hourStringArray = new Array<>(24);
         for (int i = 0; i < 24; i++) {
@@ -89,8 +107,6 @@ public class TimerScreen implements Screen {
         table.row();
 
         table.add(new MenuButtons(game)).colspan(6);
-
-        Gdx.input.setInputProcessor(stage);
     }
 
     private void startTimer() {
@@ -99,11 +115,55 @@ public class TimerScreen implements Screen {
         timerSeconds = Integer.parseInt(secondSelectBox.getSelected());
         timerIsRunning = true;
         timerTarget = game.dateUtilities.calculateTimerTarget(timerHours, timerMinutes, timerSeconds);
+        timerRemaining = timerTarget.getTime() - new Date().getTime();
         game.preferences.putInteger("timerHours", timerHours);
         game.preferences.putInteger("timerMinutes", timerMinutes);
         game.preferences.putInteger("timerSeconds", timerSeconds);
         game.preferences.putBoolean("timerIsRunning", timerIsRunning);
+        game.preferences.putLong("timerTarget", timerTarget.getTime());
+        game.preferences.putLong("timerRemaining", timerRemaining);
         game.preferences.flush();
+        showTimer();
+    }
+
+    private void showTimer() {
+        table.clear();
+
+        int seconds = (int) ((timerRemaining / 1000) % 60);
+        int minutes = (int) (timerRemaining / 60000) % 10;
+        int hours = (int) (timerRemaining / 3600000);
+        final String timerRemainingText = hours + ":" + game.dateUtilities.zeroPadMinutes(minutes) + ":"
+                + game.dateUtilities.zeroPadMinutes(seconds);
+
+        Label timerLabel = new Label(timerRemainingText, game.skin, "default");
+        table.add(timerLabel).colspan(2);
+        table.row();
+
+        TextButton timerCancelButton = new TextButton(game.bundle.get("timerCancel"), game.skin, "default");
+        timerCancelButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                timerIsRunning = false;
+                timerRemaining = 0;
+                game.preferences.putBoolean("timerIsRunning", timerIsRunning);
+                game.preferences.putLong("timerRemaining", timerRemaining);
+                game.preferences.flush();
+                showInputBoxes();
+            }
+        });
+        table.add(timerCancelButton);
+
+        String timerPauseButtonText;
+        if (timerIsRunning) {
+            timerPauseButtonText = game.bundle.get("timerPause");
+        } else {
+            timerPauseButtonText = game.bundle.get("timerResume");
+        }
+        TextButton timerPauseButton = new TextButton(timerPauseButtonText, game.skin, "default");
+        table.add(timerPauseButton);
+        table.row();
+
+        table.add(new MenuButtons(game)).colspan(2);
     }
 
     @Override
