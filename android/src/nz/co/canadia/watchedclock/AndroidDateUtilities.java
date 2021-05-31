@@ -23,6 +23,11 @@ public class AndroidDateUtilities implements DateUtilities {
     }
 
     @Override
+    public String zeroPadMilliseconds(int milliseconds) {
+        return String.format(Locale.getDefault(), "%03d", milliseconds);
+    }
+
+    @Override
     public Date addDays(Date date, int i) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

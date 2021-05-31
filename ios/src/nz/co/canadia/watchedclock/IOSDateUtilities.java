@@ -18,6 +18,11 @@ public class IOSDateUtilities implements DateUtilities {
     }
 
     @Override
+    public String zeroPadMilliseconds(int milliseconds) {
+        return String.format(Locale.getDefault(), "%03d", milliseconds);
+    }
+
+    @Override
     public Date parseDate(String pattern, String text) {
         return new SimpleDateFormat(pattern, Locale.getDefault()).parse(text, new ParsePosition(0));
     }

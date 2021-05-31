@@ -25,6 +25,11 @@ public class HtmlDateUtilities implements DateUtilities {
     }
 
     @Override
+    public String zeroPadMilliseconds(int milliseconds) {
+        return NumberFormat.getFormat("000").format(milliseconds);
+    }
+
+    @Override
     public Date addDays(Date date, int i) {
         String newDate = formatDate("yyyy.MM.", date)
                 + zeroPadMinutes(Integer.parseInt(formatDate("dd", date)) + i)
