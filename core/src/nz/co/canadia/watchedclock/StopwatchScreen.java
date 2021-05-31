@@ -18,6 +18,8 @@ public class StopwatchScreen implements Screen {
     private final Stage stage;
     private final WatchedClock game;
     private final TextButton stopwatchStartButton;
+    private final Label stopwatchLabel;
+    private long stopwatchElapsedTime;
     private Date stopwatchStartTime;
     private boolean stopwatchIsRunning;
 
@@ -25,19 +27,15 @@ public class StopwatchScreen implements Screen {
         this.game = game;
         stopwatchIsRunning = game.preferences.getBoolean("stopwatchIsRunning", false);
         stopwatchStartTime = new Date(game.preferences.getLong("stopwatchStartTime", 0));
+        stopwatchElapsedTime = game.preferences.getLong("stopwatchElapsedTime", 0);
 
-        long stopwatchTime = game.getCurrentTime().getTime() - stopwatchStartTime.getTime();
-
-        String stopwatchTimeText;
+        long stopwatchTime;
         if (stopwatchIsRunning) {
-            int milliseconds = (int) (stopwatchTime % 1000);
-            int seconds = (int) ((stopwatchTime / 1000) % 60);
-            int minutes = (int) (stopwatchTime / 60000);
-            stopwatchTimeText = minutes + ":" + game.dateUtilities.zeroPadMinutes(seconds)
-                    + "." + game.dateUtilities.zeroPadMilliseconds(milliseconds);
+            stopwatchTime = game.getCurrentTime().getTime() - stopwatchStartTime.getTime() + stopwatchElapsedTime;
         } else {
-            stopwatchTimeText = "0:00.000";
+            stopwatchTime = stopwatchElapsedTime;
         }
+        String stopwatchTimeText = formatStopwatchTime(stopwatchTime);
 
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
@@ -45,14 +43,8 @@ public class StopwatchScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label stopwatchStartTimeLabel = new Label(
-                game.dateUtilities.formatDate(Constants.DATE_TIME_FORMAT, stopwatchStartTime),
-                game.skin, "default");
-        table.add(stopwatchStartTimeLabel);
-        table.row();
-
-        Label stopwatchLabel = new Label(stopwatchTimeText, game.skin, "default");
-        table.add(stopwatchLabel);
+        stopwatchLabel = new Label(stopwatchTimeText, game.skin, "default");
+        table.add(stopwatchLabel).colspan(2);
         table.row();
 
         String stopwatchStartButtonText;
@@ -69,23 +61,52 @@ public class StopwatchScreen implements Screen {
             }
         });
         table.add(stopwatchStartButton);
+
+        TextButton stopwatchRestartButton = new TextButton(game.bundle.get("stopwatchRestart"),
+                game.skin, "default");
+        stopwatchRestartButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                resetStopwatch();
+            }
+        });
+        table.add(stopwatchRestartButton);
         table.row();
 
-        table.add(new MenuButtons(game));
+        table.add(new MenuButtons(game)).colspan(2);
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    private String formatStopwatchTime(long time) {
+        int milliseconds = (int) (time % 1000);
+        int seconds = (int) ((time / 1000) % 60);
+        int minutes = (int) (time / 60000);
+        return minutes + ":" + game.dateUtilities.zeroPadMinutes(seconds)
+                + "." + game.dateUtilities.zeroPadMilliseconds(milliseconds);
+    }
+
+    private void resetStopwatch() {
+        stopwatchElapsedTime = 0;
+        game.preferences.putLong("stopwatchElapsedTime", stopwatchElapsedTime);
+        stopwatchStartTime = new Date();
+        game.preferences.putLong("stopwatchStartTime", stopwatchStartTime.getTime());
+        game.preferences.flush();
+        stopwatchLabel.setText(formatStopwatchTime(0));
     }
 
     private void toggleStopwatch() {
         if (stopwatchIsRunning) {
             stopwatchIsRunning = false;
             game.preferences.putBoolean("stopwatchIsRunning", false);
+            stopwatchElapsedTime = new Date().getTime() - stopwatchStartTime.getTime() + stopwatchElapsedTime;
+            game.preferences.putLong("stopwatchElapsedTime", stopwatchElapsedTime);
             game.preferences.flush();
             stopwatchStartButton.setText(game.bundle.get("stopwatchStart"));
         } else {
             stopwatchIsRunning = true;
             game.preferences.putBoolean("stopwatchIsRunning", true);
-            stopwatchStartTime = game.getCurrentTime();
+            stopwatchStartTime = new Date();
             game.preferences.putLong("stopwatchStartTime", stopwatchStartTime.getTime());
             game.preferences.flush();
             stopwatchStartButton.setText(game.bundle.get("stopwatchPause"));
