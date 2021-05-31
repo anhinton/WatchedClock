@@ -33,6 +33,16 @@ public class DesktopDateUtilities implements DateUtilities {
     }
 
     @Override
+    public Date calculateTimerTarget(int hours, int minutes, int seconds) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.HOUR_OF_DAY, hours);
+        cal.add(Calendar.MINUTE, minutes);
+        cal.add(Calendar.SECOND, seconds);
+        return cal.getTime();
+    }
+
+    @Override
     public Date parseDate(String pattern, String text) {
         return new SimpleDateFormat(pattern, Locale.getDefault()).parse(text, new ParsePosition(0));
     }

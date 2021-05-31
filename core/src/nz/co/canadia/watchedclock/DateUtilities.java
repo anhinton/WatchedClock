@@ -11,5 +11,8 @@ public interface DateUtilities {
 
     Date addDays(Date date, int i);
 
+    // TODO: Implement for Android, iOS. Test
+    Date calculateTimerTarget(int hours, int minutes, int seconds);
+
     String zeroPadMilliseconds(int milliseconds);
 }

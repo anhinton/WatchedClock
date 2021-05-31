@@ -47,6 +47,9 @@ public class WatchedClock extends Game {
 			case "StopwatchScreen":
 				screen = new StopwatchScreen(this);
 				break;
+			case "TimerScreen":
+				screen = new TimerScreen(this);
+				break;
 			default:
 				screen = new ClockScreen(this);
 				break;

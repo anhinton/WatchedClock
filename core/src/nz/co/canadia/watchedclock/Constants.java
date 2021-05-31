@@ -16,6 +16,7 @@ public class Constants {
     public static final String CLOCK_TIME_FORMAT = "h:mm a";
     public static final String DATE_FORMAT = "yyyy.MM.dd";
     public static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + CLOCK_TIME_FORMAT;
+    public static final String TIMER_TARGET_FORMAT = DATE_FORMAT + " H:mm:ss";
 
     public static final boolean ALARM_IS_SET_DEFAULT = false;
 }

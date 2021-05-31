@@ -37,4 +37,16 @@ public class HtmlDateUtilities implements DateUtilities {
         return parseDate(Constants.DATE_TIME_FORMAT, newDate);
     }
 
+    @Override
+    public Date calculateTimerTarget(int hours, int minutes, int seconds) {
+        Date date = new Date();
+        String newDate = formatDate("yyyy.MM.dd ", date)
+                + (Integer.parseInt(formatDate("H", date)) + hours)
+                + ":"
+                + (Integer.parseInt(formatDate("mm", date)) + minutes)
+                + ":"
+                + (Integer.parseInt(formatDate("ss", date)) + seconds);
+        return parseDate(Constants.TIMER_TARGET_FORMAT, newDate);
+    }
+
 }

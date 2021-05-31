@@ -50,9 +50,9 @@ public class AlarmScreen implements Screen {
         table.add(hourSelectBox);
 
         minuteSelectBox = new SelectBox<>(game.skin, "default");
-        Array<String> minuteStringArray = new Array<>(12);
-        for (int i = 0; i < 12; i++) {
-            minuteStringArray.add(game.dateUtilities.zeroPadMinutes(i * 5));
+        Array<String> minuteStringArray = new Array<>(60);
+        for (int i = 0; i < 60; i++) {
+            minuteStringArray.add(game.dateUtilities.zeroPadMinutes(i));
         }
         minuteSelectBox.setItems(minuteStringArray);
         minuteSelectBox.setSelected(game.dateUtilities.formatDate("mm", alarmTime));
