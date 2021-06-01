@@ -20,6 +20,7 @@ public class WatchedClock extends Game {
 	Skin skin;
 	private Date currentTime;
 	private long stopwatchTime;
+	private long timerRemaining;
 
 	public WatchedClock(DateUtilities dateUtilities) {
 		this.dateUtilities = dateUtilities;
@@ -32,6 +33,7 @@ public class WatchedClock extends Game {
 		preferences = Gdx.app.getPreferences(Constants.PREFERENCES_PATH);
 
 		currentTime = new Date();
+		// Stopwatch
 		Date stopwatchStartTime = new Date(preferences.getLong("stopwatchStartTime", 0));
 		long stopwatchElapsedTime = preferences.getLong("stopwatchElapsedTime", 0);
 		boolean stopwatchIsRunning = preferences.getBoolean("stopwatchIsRunning", false);
@@ -39,6 +41,14 @@ public class WatchedClock extends Game {
 			stopwatchTime = currentTime.getTime() - stopwatchStartTime.getTime() + stopwatchElapsedTime;
 		} else {
 			stopwatchTime = stopwatchElapsedTime;
+		}
+		// Timer
+		Date timerTarget = new Date(preferences.getLong("timerTarget", 0));
+		boolean timerIsRunning = preferences.getBoolean("timerIsRunning", false);
+		if (timerIsRunning) {
+			timerRemaining = timerTarget.getTime() - new Date().getTime();
+		} else {
+			timerRemaining = preferences.getLong("timerRemaining", 0);
 		}
 
 		manager.load("skin/uiskin.json", Skin.class);
@@ -95,5 +105,13 @@ public class WatchedClock extends Game {
 
 	public long getStopwatchTime() {
 		return stopwatchTime;
+	}
+
+	public long getTimerRemaining() {
+		return timerRemaining;
+	}
+
+	public void setTimerRemaining(long timerRemaining) {
+		this.timerRemaining = timerRemaining;
 	}
 }

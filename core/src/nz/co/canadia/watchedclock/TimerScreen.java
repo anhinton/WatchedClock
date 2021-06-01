@@ -20,6 +20,7 @@ import java.util.Date;
 public class TimerScreen implements Screen {
     private final Stage stage;
     private final MenuButtons menuButtons;
+//    private long timerRemaining;
     private SelectBox<String> hourSelectBox;
     private SelectBox<String> minuteSelectBox;
     private SelectBox<String> secondSelectBox;
@@ -30,7 +31,6 @@ public class TimerScreen implements Screen {
     private int timerMinutes;
     private int timerSeconds;
     private Date timerTarget;
-    private long timerRemaining;
     private TextButton timerPauseButton;
 
     public TimerScreen(final WatchedClock game) {
@@ -48,15 +48,14 @@ public class TimerScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
+        long timerRemaining = game.getTimerRemaining();
         if (timerIsRunning) {
-            timerRemaining = timerTarget.getTime() - new Date().getTime();
             if (timerRemaining > 0) {
                 showTimer();
             } else {
                 playAlarm();
             }
         } else {
-            timerRemaining = game.preferences.getLong("timerRemaining", 0);
             if (timerRemaining > 0) {
                 showTimer();
             } else {
@@ -71,9 +70,9 @@ public class TimerScreen implements Screen {
         table.clear();
 
         timerIsRunning = false;
-        timerRemaining = 0;
+        game.setTimerRemaining(0);
         game.preferences.putBoolean("timerIsRunning", timerIsRunning);
-        game.preferences.putLong("timerRemaining", timerRemaining);
+        game.preferences.putLong("timerRemaining", game.getTimerRemaining());
         game.preferences.flush();
 
         Label timerRemainingLabel = new Label("0:00:00", game.skin, "default");
@@ -149,10 +148,11 @@ public class TimerScreen implements Screen {
         timerMinutes = Integer.parseInt(minuteSelectBox.getSelected());
         timerSeconds = Integer.parseInt(secondSelectBox.getSelected());
         timerTarget = game.dateUtilities.calculateTimerTarget(timerHours, timerMinutes, timerSeconds);
-        timerRemaining = timerTarget.getTime() - new Date().getTime();
+        long timerRemaining = timerTarget.getTime() - new Date().getTime();
 
         if (timerRemaining > 0) {
             timerIsRunning = true;
+            game.setTimerRemaining(timerRemaining);
             game.preferences.putBoolean("timerIsRunning", timerIsRunning);
             showTimer();
         } else {
@@ -171,7 +171,7 @@ public class TimerScreen implements Screen {
     private void showTimer() {
         table.clear();
 
-        timerRemaining = MathUtils.clamp(timerRemaining, 0, timerRemaining);
+        long timerRemaining = MathUtils.clamp(game.getTimerRemaining(), 0, game.getTimerRemaining());
 
         int seconds = (int) ((timerRemaining / 1000) % 60);
         int minutes = (int) (timerRemaining / 60000) % 10;
@@ -188,9 +188,9 @@ public class TimerScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 timerIsRunning = false;
-                timerRemaining = 0;
+                game.setTimerRemaining(0);
                 game.preferences.putBoolean("timerIsRunning", timerIsRunning);
-                game.preferences.putLong("timerRemaining", timerRemaining);
+                game.preferences.putLong("timerRemaining", game.getTimerRemaining());
                 game.preferences.flush();
                 showInputBoxes();
             }
@@ -219,11 +219,11 @@ public class TimerScreen implements Screen {
     private void toggleTimer() {
         if (timerIsRunning) {
             timerPauseButton.setText(game.bundle.get("timerResume"));
-            timerRemaining = timerTarget.getTime() - new Date().getTime();
+            long timerRemaining = timerTarget.getTime() - new Date().getTime();
             game.preferences.putLong("timerRemaining", timerRemaining);
         } else {
             timerPauseButton.setText(game.bundle.get("timerPause"));
-            timerTarget = new Date(new Date().getTime() + timerRemaining);
+            timerTarget = new Date(new Date().getTime() + game.getTimerRemaining());
             game.preferences.putLong("timerTarget", timerTarget.getTime());
         }
         timerIsRunning = !timerIsRunning;
