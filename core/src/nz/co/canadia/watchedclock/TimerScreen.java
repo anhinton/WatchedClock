@@ -2,6 +2,7 @@ package nz.co.canadia.watchedclock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,6 +19,7 @@ import java.util.Date;
 
 public class TimerScreen implements Screen {
     private final Stage stage;
+    private final MenuButtons menuButtons;
     private SelectBox<String> hourSelectBox;
     private SelectBox<String> minuteSelectBox;
     private SelectBox<String> secondSelectBox;
@@ -29,9 +31,11 @@ public class TimerScreen implements Screen {
     private int timerSeconds;
     private Date timerTarget;
     private long timerRemaining;
+    private TextButton timerPauseButton;
 
     public TimerScreen(final WatchedClock game) {
         this.game = game;
+        menuButtons = new MenuButtons(game);
         timerHours = game.preferences.getInteger("timerHours", 0);
         timerMinutes = game.preferences.getInteger("timerMinutes", 0);
         timerSeconds = game.preferences.getInteger("timerSeconds", 0);
@@ -46,7 +50,11 @@ public class TimerScreen implements Screen {
 
         if (timerIsRunning) {
             timerRemaining = timerTarget.getTime() - new Date().getTime();
-            showTimer();
+            if (timerRemaining > 0) {
+                showTimer();
+            } else {
+                playAlarm();
+            }
         } else {
             timerRemaining = game.preferences.getLong("timerRemaining", 0);
             if (timerRemaining > 0) {
@@ -57,6 +65,33 @@ public class TimerScreen implements Screen {
         }
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    private void playAlarm() {
+        table.clear();
+
+        timerIsRunning = false;
+        timerRemaining = 0;
+        game.preferences.putBoolean("timerIsRunning", timerIsRunning);
+        game.preferences.putLong("timerRemaining", timerRemaining);
+        game.preferences.flush();
+
+        Label timerRemainingLabel = new Label("0:00:00", game.skin, "default");
+        table.add(timerRemainingLabel);
+        table.row();
+
+        TextButton timerFinishedButton = new TextButton(game.bundle.get("timerFinished"),
+                game.skin, "default");
+        timerFinishedButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                showInputBoxes();
+            }
+        });
+        table.add(timerFinishedButton);
+        table.row();
+
+        table.add(menuButtons);
     }
 
     private void showInputBoxes() {
@@ -106,28 +141,37 @@ public class TimerScreen implements Screen {
         table.add(timerStartButton).colspan(6);
         table.row();
 
-        table.add(new MenuButtons(game)).colspan(6);
+        table.add(menuButtons).colspan(6);
     }
 
     private void startTimer() {
         timerHours = Integer.parseInt(hourSelectBox.getSelected());
         timerMinutes = Integer.parseInt(minuteSelectBox.getSelected());
         timerSeconds = Integer.parseInt(secondSelectBox.getSelected());
-        timerIsRunning = true;
         timerTarget = game.dateUtilities.calculateTimerTarget(timerHours, timerMinutes, timerSeconds);
         timerRemaining = timerTarget.getTime() - new Date().getTime();
+
+        if (timerRemaining > 0) {
+            timerIsRunning = true;
+            game.preferences.putBoolean("timerIsRunning", timerIsRunning);
+            showTimer();
+        } else {
+            timerSeconds = 1;
+            secondSelectBox.setSelected(String.valueOf(timerSeconds));
+        }
+
         game.preferences.putInteger("timerHours", timerHours);
         game.preferences.putInteger("timerMinutes", timerMinutes);
         game.preferences.putInteger("timerSeconds", timerSeconds);
-        game.preferences.putBoolean("timerIsRunning", timerIsRunning);
         game.preferences.putLong("timerTarget", timerTarget.getTime());
         game.preferences.putLong("timerRemaining", timerRemaining);
         game.preferences.flush();
-        showTimer();
     }
 
     private void showTimer() {
         table.clear();
+
+        timerRemaining = MathUtils.clamp(timerRemaining, 0, timerRemaining);
 
         int seconds = (int) ((timerRemaining / 1000) % 60);
         int minutes = (int) (timerRemaining / 60000) % 10;
@@ -159,11 +203,32 @@ public class TimerScreen implements Screen {
         } else {
             timerPauseButtonText = game.bundle.get("timerResume");
         }
-        TextButton timerPauseButton = new TextButton(timerPauseButtonText, game.skin, "default");
+        timerPauseButton = new TextButton(timerPauseButtonText, game.skin, "default");
+        timerPauseButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                toggleTimer();
+            }
+        });
         table.add(timerPauseButton);
         table.row();
 
-        table.add(new MenuButtons(game)).colspan(2);
+        table.add(menuButtons).colspan(2);
+    }
+
+    private void toggleTimer() {
+        if (timerIsRunning) {
+            timerPauseButton.setText(game.bundle.get("timerResume"));
+            timerRemaining = timerTarget.getTime() - new Date().getTime();
+            game.preferences.putLong("timerRemaining", timerRemaining);
+        } else {
+            timerPauseButton.setText(game.bundle.get("timerPause"));
+            timerTarget = new Date(new Date().getTime() + timerRemaining);
+            game.preferences.putLong("timerTarget", timerTarget.getTime());
+        }
+        timerIsRunning = !timerIsRunning;
+        game.preferences.putBoolean("timerIsRunning", timerIsRunning);
+        game.preferences.flush();
     }
 
     @Override
