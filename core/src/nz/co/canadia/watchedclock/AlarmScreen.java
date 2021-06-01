@@ -18,17 +18,19 @@ import java.util.Date;
 
 public class AlarmScreen implements Screen {
     private final Stage stage;
-    private final SelectBox<String> hourSelectBox;
-    private final SelectBox<String> minuteSelectBox;
-    private final SelectBox<String> periodSelectBox;
+    private final MenuButtons menuButtons;
+    private SelectBox<String> hourSelectBox;
+    private SelectBox<String> minuteSelectBox;
+    private SelectBox<String> periodSelectBox;
     private final WatchedClock game;
-    private final TextButton setAlarmButton;
+    private TextButton setAlarmButton;
     private final Table table;
     private Date alarmTime;
     private boolean alarmIsSet;
 
     public AlarmScreen(final WatchedClock game) {
         this.game = game;
+        menuButtons = new MenuButtons(game);
         alarmTime = new Date(game.preferences.getLong("alarmTime", 0));
         alarmIsSet = game.preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
 
@@ -37,6 +39,18 @@ public class AlarmScreen implements Screen {
         table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+
+        if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
+            playAlarm();
+        } else {
+            showInputBoxes();
+        }
+
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private void showInputBoxes() {
+        table.clear();
 
         // ALARM
         hourSelectBox = new SelectBox<>(game.skin, "default");
@@ -81,34 +95,45 @@ public class AlarmScreen implements Screen {
         table.add(setAlarmButton).colspan(3);
         table.row();
 
-        table.add(new MenuButtons(game)).colspan(3);
-
-        Gdx.input.setInputProcessor(stage);
-
-        if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
-            playAlarm();
-        } else {
-            Label alarmLabel = new Label("EVERYTHING IS NORMAL", game.skin, "default");
-            table.row();
-            table.add(alarmLabel).colspan(3);
-            Gdx.app.log("AlarmScreen", "EVERYTHING IS NORMAL");
-        }
+        table.add(menuButtons).colspan(3);
     }
 
     private void toggleAlarm() {
         if (alarmIsSet) {
+            setAlarmButton.setText(game.bundle.get("alarmButtonSet"));
             unsetAlarm();
         } else {
+            setAlarmButton.setText(game.bundle.get("alarmButtonDisable"));
             setAlarmTime();
         }
     }
 
     private void playAlarm() {
+        table.clear();
+
         unsetAlarm();
-        Label alarmLabel = new Label("THIS IS AN ALARM", game.skin, "default");
+
+        Label alarmPlayingLabel = new Label(game.bundle.get("alarmPlaying"), game.skin, "default");
+        table.add(alarmPlayingLabel);
         table.row();
-        table.add(alarmLabel).colspan(3);
-        Gdx.app.log("AlarmScreen", "THIS IS AN ALARM");
+
+        Label alarmTimeLabel = new Label(
+                game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, alarmTime),
+                game.skin, "default");
+        table.add(alarmTimeLabel);
+        table.row();
+
+        TextButton alarmStopButton = new TextButton(game.bundle.get("alarmStop"), game.skin, "default");
+        alarmStopButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                showInputBoxes();
+            }
+        });
+        table.add(alarmStopButton);
+        table.row();
+
+        table.add(menuButtons);
     }
 
     private void setAlarmTime() {
@@ -121,7 +146,6 @@ public class AlarmScreen implements Screen {
             alarmTime = game.dateUtilities.addDays(alarmTime, 1);
         }
         alarmIsSet = true;
-        setAlarmButton.setText(game.bundle.get("alarmButtonDisable"));
         game.preferences.putLong("alarmTime", alarmTime.getTime());
         game.preferences.putBoolean("alarmIsSet", alarmIsSet);
         game.preferences.flush();
@@ -129,7 +153,6 @@ public class AlarmScreen implements Screen {
 
     private void unsetAlarm() {
         alarmIsSet = false;
-        setAlarmButton.setText(game.bundle.get("alarmButtonSet"));
         game.preferences.putBoolean("alarmIsSet", alarmIsSet);
         game.preferences.flush();
     }
