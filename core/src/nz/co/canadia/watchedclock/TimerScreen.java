@@ -75,19 +75,23 @@ public class TimerScreen implements Screen {
         game.preferences.putLong("timerRemaining", game.getTimerRemaining());
         game.preferences.flush();
 
+        Label timerFinishedLabel = new Label(game.bundle.get("timerFinished"), game.skin, "default");
+        table.add(timerFinishedLabel);
+        table.row();
+
         Label timerRemainingLabel = new Label("0:00:00", game.skin, "default");
         table.add(timerRemainingLabel);
         table.row();
 
-        TextButton timerFinishedButton = new TextButton(game.bundle.get("timerFinished"),
+        TextButton timerResetButton = new TextButton(game.bundle.get("timerReset"),
                 game.skin, "default");
-        timerFinishedButton.addListener(new ChangeListener() {
+        timerResetButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showInputBoxes();
             }
         });
-        table.add(timerFinishedButton);
+        table.add(timerResetButton);
         table.row();
 
         table.add(menuButtons);
