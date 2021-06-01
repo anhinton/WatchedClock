@@ -34,4 +34,14 @@ public class AndroidDateUtilities implements DateUtilities {
         cal.add(Calendar.DAY_OF_MONTH, i);
         return cal.getTime();
     }
+
+    @Override
+    public Date calculateTimerTarget(int hours, int minutes, int seconds) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.HOUR_OF_DAY, hours);
+        cal.add(Calendar.MINUTE, minutes);
+        cal.add(Calendar.SECOND, seconds);
+        return cal.getTime();
+    }
 }

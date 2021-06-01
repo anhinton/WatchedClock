@@ -19,6 +19,7 @@ public class WatchedClock extends Game {
 	Preferences preferences;
 	Skin skin;
 	private Date currentTime;
+	private long stopwatchTime;
 
 	public WatchedClock(DateUtilities dateUtilities) {
 		this.dateUtilities = dateUtilities;
@@ -26,11 +27,19 @@ public class WatchedClock extends Game {
 
 	@Override
 	public void create () {
-		currentTime = new Date();
-
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		preferences = Gdx.app.getPreferences(Constants.PREFERENCES_PATH);
+
+		currentTime = new Date();
+		Date stopwatchStartTime = new Date(preferences.getLong("stopwatchStartTime", 0));
+		long stopwatchElapsedTime = preferences.getLong("stopwatchElapsedTime", 0);
+		boolean stopwatchIsRunning = preferences.getBoolean("stopwatchIsRunning", false);
+		if (stopwatchIsRunning) {
+			stopwatchTime = currentTime.getTime() - stopwatchStartTime.getTime() + stopwatchElapsedTime;
+		} else {
+			stopwatchTime = stopwatchElapsedTime;
+		}
 
 		manager.load("skin/uiskin.json", Skin.class);
 		manager.load("i18n/Bundle", I18NBundle.class);
@@ -82,5 +91,9 @@ public class WatchedClock extends Game {
 
 	public Date getCurrentTime() {
 		return currentTime;
+	}
+
+	public long getStopwatchTime() {
+		return stopwatchTime;
 	}
 }

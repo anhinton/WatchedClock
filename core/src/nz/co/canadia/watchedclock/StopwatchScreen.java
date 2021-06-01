@@ -29,13 +29,7 @@ public class StopwatchScreen implements Screen {
         stopwatchStartTime = new Date(game.preferences.getLong("stopwatchStartTime", 0));
         stopwatchElapsedTime = game.preferences.getLong("stopwatchElapsedTime", 0);
 
-        long stopwatchTime;
-        if (stopwatchIsRunning) {
-            stopwatchTime = game.getCurrentTime().getTime() - stopwatchStartTime.getTime() + stopwatchElapsedTime;
-        } else {
-            stopwatchTime = stopwatchElapsedTime;
-        }
-        String stopwatchTimeText = formatStopwatchTime(stopwatchTime);
+        String stopwatchTimeText = formatStopwatchTime(game.getStopwatchTime());
 
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
