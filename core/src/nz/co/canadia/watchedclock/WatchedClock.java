@@ -33,6 +33,9 @@ public class WatchedClock extends Game {
 		preferences = Gdx.app.getPreferences(Constants.PREFERENCES_PATH);
 
 		currentTime = new Date();
+		// Alarm
+		Date alarmTime = new Date(preferences.getLong("alarmTime", 0));
+		boolean alarmIsSet = preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
 		// Stopwatch
 		Date stopwatchStartTime = new Date(preferences.getLong("stopwatchStartTime", 0));
 		long stopwatchElapsedTime = preferences.getLong("stopwatchElapsedTime", 0);
@@ -59,19 +62,27 @@ public class WatchedClock extends Game {
 		skin = manager.get("skin/uiskin.json", Skin.class);
 
 		Screen screen;
-		switch (preferences.getString("currentScreen", "ClockScreen")) {
-			case "AlarmScreen":
-				screen = new AlarmScreen(this);
-				break;
-			case "StopwatchScreen":
-				screen = new StopwatchScreen(this);
-				break;
-			case "TimerScreen":
-				screen = new TimerScreen(this);
-				break;
-			default:
-				screen = new ClockScreen(this);
-				break;
+		if (currentTime.after(alarmTime) && alarmIsSet) {
+			screen = new AlarmScreen(this);
+		} else if (timerIsRunning && timerRemaining <= 0) {
+			screen = new TimerScreen(this);
+		} else if (stopwatchIsRunning) {
+			screen = new StopwatchScreen(this);
+		} else {
+			switch (preferences.getString("currentScreen", "ClockScreen")) {
+				case "AlarmScreen":
+					screen = new AlarmScreen(this);
+					break;
+				case "StopwatchScreen":
+					screen = new StopwatchScreen(this);
+					break;
+				case "TimerScreen":
+					screen = new TimerScreen(this);
+					break;
+				default:
+					screen = new ClockScreen(this);
+					break;
+			}
 		}
 		this.setScreen(screen);
 	}
