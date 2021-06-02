@@ -118,7 +118,7 @@ public class AlarmScreen implements Screen {
         table.row();
 
         Label alarmTimeLabel = new Label(
-                game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, alarmTime),
+                game.dateUtilities.formatDate(Constants.SHORT_TIME_FORMAT, alarmTime),
                 game.skin, "default");
         table.add(alarmTimeLabel);
         table.row();
