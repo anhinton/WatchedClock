@@ -114,7 +114,7 @@ public class StopwatchScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(Constants.BACKGROUND_COLOR);
 
         stage.act(delta);
         stage.draw();

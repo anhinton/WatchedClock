@@ -18,13 +18,14 @@ public class ClockScreen implements Screen {
         stage = new Stage(viewport);
         Table table = new Table();
         table.setFillParent(true);
+        table.pad(game.getPadding());
         stage.addActor(table);
 
         // CLOCK
         Label clockLabel = new Label(
                 game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()),
-                game.skin, "default");
-        table.add(clockLabel).colspan(3);
+                game.skin, "time");
+        table.add(clockLabel).space(game.getPadding());
         table.row();
 
         table.add(new MenuButtons(game));
@@ -39,7 +40,7 @@ public class ClockScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(Constants.BACKGROUND_COLOR);
 
         stage.act(delta);
         stage.draw();

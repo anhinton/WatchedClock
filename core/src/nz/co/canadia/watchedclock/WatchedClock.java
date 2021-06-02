@@ -5,8 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.Date;
@@ -21,6 +27,7 @@ public class WatchedClock extends Game {
 	private Date currentTime;
 	private long stopwatchTime;
 	private long timerRemaining;
+	private int padding;
 
 	public WatchedClock(DateUtilities dateUtilities) {
 		this.dateUtilities = dateUtilities;
@@ -31,6 +38,7 @@ public class WatchedClock extends Game {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		preferences = Gdx.app.getPreferences(Constants.PREFERENCES_PATH);
+		padding = MathUtils.round(Constants.UI_PADDING * Constants.WORLD_WIDTH);
 
 		currentTime = new Date();
 		// Alarm
@@ -54,12 +62,34 @@ public class WatchedClock extends Game {
 			timerRemaining = preferences.getLong("timerRemaining", 0);
 		}
 
+		FreeTypeFontGenerator inconsolataGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Inconsolata-VariableFont_wdth,wght.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter timeLabelParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		timeLabelParameter.size = MathUtils.round(Constants.TIME_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
+		BitmapFont timeLabelFont = inconsolataGenerator.generateFont(timeLabelParameter);
+		inconsolataGenerator.dispose();
+
+		FreeTypeFontGenerator podkovaGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Podkova-VariableFont_wght.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter menuButtonParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		menuButtonParameter.size = MathUtils.round(Constants.MENU_BUTTON_FONT_SIZE * Constants.WORLD_WIDTH);
+		menuButtonParameter.color = Constants.BUTTON_FONT_COLOR;
+		menuButtonParameter.shadowColor = Constants.BUTTON_FONT_SHADOW_COLOR;
+		menuButtonParameter.shadowOffsetX = MathUtils.round(Constants.BUTTON_SHADOW_SIZE * Constants.WORLD_WIDTH);
+		menuButtonParameter.shadowOffsetY = MathUtils.round(Constants.BUTTON_SHADOW_SIZE * Constants.WORLD_WIDTH);
+		BitmapFont menuButtonFont = podkovaGenerator.generateFont(menuButtonParameter);
+		podkovaGenerator.dispose();
+
 		manager.load("skin/uiskin.json", Skin.class);
 		manager.load("i18n/Bundle", I18NBundle.class);
 		manager.finishLoading();
 
 		bundle = manager.get("i18n/Bundle", I18NBundle.class);
 		skin = manager.get("skin/uiskin.json", Skin.class);
+		// Create labels
+		skin.add("time", new Label.LabelStyle(timeLabelFont, Constants.FONT_COLOR), Label.LabelStyle.class);
+		// Create TextButtons
+		TextButton.TextButtonStyle menuTextButtonStyle = new TextButton.TextButtonStyle(skin.get("default", TextButton.TextButtonStyle.class));
+		menuTextButtonStyle.font = menuButtonFont;
+		skin.add("menu", menuTextButtonStyle);
 
 		Screen screen;
 		if (currentTime.after(alarmTime) && alarmIsSet) {
@@ -108,6 +138,10 @@ public class WatchedClock extends Game {
 	public void dispose () {
 		batch.dispose();
 		manager.dispose();
+	}
+
+	public int getPadding() {
+		return padding;
 	}
 
 	public Date getCurrentTime() {

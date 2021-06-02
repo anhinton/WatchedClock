@@ -1,17 +1,31 @@
 package nz.co.canadia.watchedclock;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+
 public class Constants {
     public static final String GAME_NAME = "A Watched Clock Never Boils";
     public static final String PREFERENCES_PATH = "nz.co.canadia.watchedclock.preferences";
 
-    public static final int DESKTOP_WIDTH = 640;
-    public static final int DESKTOP_HEIGHT = 480;
+    public static final int DESKTOP_WIDTH = 405;
+    public static final int DESKTOP_HEIGHT = 720;
 
     public static final int HTML_WIDTH = DESKTOP_WIDTH;
     public static final int HTML_HEIGHT = DESKTOP_HEIGHT;
 
-    public static final int WORLD_WIDTH = 360;
-    public static final int WORLD_HEIGHT = 480;
+    public static final int WORLD_WIDTH = Gdx.graphics.getBackBufferWidth();
+    public static final int WORLD_HEIGHT = Gdx.graphics.getBackBufferHeight();
+
+    public static final Color BACKGROUND_COLOR = Color.valueOf("ea9d7eff");
+    public static final Color FONT_COLOR = Color.valueOf("1c2833ff");
+    public static final Color BUTTON_FONT_COLOR = Color.WHITE;
+    public static final Color BUTTON_FONT_SHADOW_COLOR = FONT_COLOR;
+    public static final float TIME_LABEL_FONT_SIZE = .16f;
+    public static final float MENU_BUTTON_FONT_SIZE = .058f;
+    public static final float BUTTON_SHADOW_SIZE = .005f;
+    public static final float UI_PADDING = .03f;
+    public static final float MENU_BUTTON_WIDTH = .2f;
+    public static final float MENU_BUTTON_HEIGHT = .1f;
 
     public static final String CLOCK_TIME_FORMAT = "h:mm:ss a";
     public static final String SHORT_TIME_FORMAT = "h:mm a";
