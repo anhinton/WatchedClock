@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -35,10 +36,13 @@ public class StopwatchScreen implements Screen {
         stage = new Stage(viewport);
         Table table = new Table();
         table.setFillParent(true);
+        table.pad(game.getPadding());
         stage.addActor(table);
 
-        stopwatchLabel = new Label(stopwatchTimeText, game.skin, "default");
-        table.add(stopwatchLabel).colspan(2);
+        stopwatchLabel = new Label(stopwatchTimeText, game.skin, "time");
+        table.add(stopwatchLabel)
+                .colspan(2)
+                .space(game.getPadding());
         table.row();
 
         String stopwatchStartButtonText;
@@ -47,24 +51,31 @@ public class StopwatchScreen implements Screen {
         } else {
             stopwatchStartButtonText = game.bundle.get("stopwatchStart");
         }
-        stopwatchStartButton = new TextButton(stopwatchStartButtonText, game.skin, "default");
+        stopwatchStartButton = new TextButton(stopwatchStartButtonText,
+                game.skin, "menu");
         stopwatchStartButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 toggleStopwatch();
             }
         });
-        table.add(stopwatchStartButton);
+        table.add(stopwatchStartButton)
+                .align(Align.right)
+                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .space(game.getPadding());
 
         TextButton stopwatchRestartButton = new TextButton(game.bundle.get("stopwatchRestart"),
-                game.skin, "default");
+                game.skin, "menu");
         stopwatchRestartButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 resetStopwatch();
             }
         });
-        table.add(stopwatchRestartButton);
+        table.add(stopwatchRestartButton)
+                .align(Align.left)
+                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .space(game.getPadding());
         table.row();
 
         table.add(new MenuButtons(game)).colspan(2);
