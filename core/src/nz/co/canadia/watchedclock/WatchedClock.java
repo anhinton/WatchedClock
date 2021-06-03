@@ -74,13 +74,11 @@ public class WatchedClock extends Game {
 		// Alarm Label
 		FreeTypeFontGenerator.FreeTypeFontParameter alarmLabelParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		alarmLabelParameter.size = MathUtils.round(Constants.ALARM_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
-		alarmLabelParameter.color = Constants.FONT_COLOR;
 		BitmapFont alarmLabelFont = inconsolataGenerator.generateFont(alarmLabelParameter);
 
 		// SelectBox List
 		FreeTypeFontGenerator.FreeTypeFontParameter alarmListParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		alarmListParameter.size = MathUtils.round(Constants.ALARM_LIST_FONT_SIZE * Constants.WORLD_WIDTH);
-		alarmListParameter.color = Constants.SELECTBOX_FONT_COLOR;
 		BitmapFont alarmListFont = inconsolataGenerator.generateFont(alarmListParameter);
 		inconsolataGenerator.dispose();
 
@@ -111,8 +109,18 @@ public class WatchedClock extends Game {
 		// SelectBox
 		SelectBox.SelectBoxStyle alarmSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
 		alarmSelectBoxStyle.font = timeLabelFont;
+		alarmSelectBoxStyle.fontColor = Constants.SELECTBOX_FONT_COLOR;
 		alarmSelectBoxStyle.listStyle.font = alarmListFont;
+		alarmSelectBoxStyle.listStyle.fontColorSelected = Constants.SELECTBOX_FONT_COLOR;
+		alarmSelectBoxStyle.listStyle.fontColorUnselected = Constants.SELECTBOX_FONT_COLOR;
 		skin.add("alarm", alarmSelectBoxStyle);
+		SelectBox.SelectBoxStyle timerSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
+		timerSelectBoxStyle.font = alarmLabelFont;
+		timerSelectBoxStyle.fontColor = Constants.SELECTBOX_FONT_COLOR;
+		timerSelectBoxStyle.listStyle.font = alarmListFont;
+		timerSelectBoxStyle.listStyle.fontColorSelected = Constants.SELECTBOX_FONT_COLOR;
+		timerSelectBoxStyle.listStyle.fontColorUnselected = Constants.SELECTBOX_FONT_COLOR;
+		skin.add("timer", timerSelectBoxStyle);
 
 		Screen screen;
 		if (currentTime.after(alarmTime) && alarmIsSet) {
