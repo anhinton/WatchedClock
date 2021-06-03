@@ -52,7 +52,7 @@ public class StopwatchScreen implements Screen {
             stopwatchStartButtonText = game.bundle.get("stopwatchStart");
         }
         stopwatchStartButton = new TextButton(stopwatchStartButtonText,
-                game.skin, "menu");
+                game.skin, "control");
         stopwatchStartButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -65,7 +65,7 @@ public class StopwatchScreen implements Screen {
                 .space(game.getPadding());
 
         TextButton stopwatchRestartButton = new TextButton(game.bundle.get("stopwatchRestart"),
-                game.skin, "menu");
+                game.skin, "control");
         stopwatchRestartButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -78,7 +78,7 @@ public class StopwatchScreen implements Screen {
                 .space(game.getPadding());
         table.row();
 
-        table.add(new MenuButtons(game)).colspan(2);
+        table.add(new MenuButtons(game, "Stopwatch")).colspan(2);
 
         Gdx.input.setInputProcessor(stage);
     }

@@ -103,9 +103,13 @@ public class WatchedClock extends Game {
 		skin.add("time", new Label.LabelStyle(timeLabelFont, Constants.FONT_COLOR), Label.LabelStyle.class);
 		skin.add("alarm", new Label.LabelStyle(alarmLabelFont, Constants.FONT_COLOR), Label.LabelStyle.class);
 		// TextButtons
-		TextButton.TextButtonStyle menuTextButtonStyle = new TextButton.TextButtonStyle(skin.get("default", TextButton.TextButtonStyle.class));
+		TextButton.TextButtonStyle menuTextButtonStyle = new TextButton.TextButtonStyle(skin.get("toggle", TextButton.TextButtonStyle.class));
 		menuTextButtonStyle.font = menuButtonFont;
 		skin.add("menu", menuTextButtonStyle);
+		TextButton.TextButtonStyle controlTextButtonStyle = new TextButton.TextButtonStyle(skin.get("default", TextButton.TextButtonStyle.class));
+		controlTextButtonStyle.font = menuButtonFont;
+		skin.add("control", controlTextButtonStyle);
+
 		// SelectBox
 		SelectBox.SelectBoxStyle alarmSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
 		alarmSelectBoxStyle.font = timeLabelFont;

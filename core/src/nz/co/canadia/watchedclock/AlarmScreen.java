@@ -31,7 +31,7 @@ public class AlarmScreen implements Screen {
 
     public AlarmScreen(final WatchedClock game) {
         this.game = game;
-        menuButtons = new MenuButtons(game);
+        menuButtons = new MenuButtons(game, "Alarm");
         alarmTime = new Date(game.preferences.getLong("alarmTime", 0));
         alarmIsSet = game.preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
 
@@ -87,7 +87,7 @@ public class AlarmScreen implements Screen {
         } else {
             setAlarmButtonText = game.bundle.get("alarmButtonSet");
         }
-        setAlarmButton = new TextButton(setAlarmButtonText, game.skin, "menu");
+        setAlarmButton = new TextButton(setAlarmButtonText, game.skin, "control");
         setAlarmButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -128,7 +128,7 @@ public class AlarmScreen implements Screen {
         table.add(alarmTimeLabel).space(game.getPadding());
         table.row();
 
-        TextButton alarmStopButton = new TextButton(game.bundle.get("alarmStop"), game.skin, "menu");
+        TextButton alarmStopButton = new TextButton(game.bundle.get("alarmStop"), game.skin, "control");
         alarmStopButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

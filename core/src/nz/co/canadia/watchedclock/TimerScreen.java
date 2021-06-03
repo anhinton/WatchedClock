@@ -35,7 +35,7 @@ public class TimerScreen implements Screen {
 
     public TimerScreen(final WatchedClock game) {
         this.game = game;
-        menuButtons = new MenuButtons(game);
+        menuButtons = new MenuButtons(game, "Timer");
         timerHours = game.preferences.getInteger("timerHours", 0);
         timerMinutes = game.preferences.getInteger("timerMinutes", 0);
         timerSeconds = game.preferences.getInteger("timerSeconds", 0);
@@ -85,7 +85,7 @@ public class TimerScreen implements Screen {
         table.row();
 
         TextButton timerResetButton = new TextButton(game.bundle.get("timerReset"),
-                game.skin, "menu");
+                game.skin, "control");
         timerResetButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -137,7 +137,7 @@ public class TimerScreen implements Screen {
 
         table.row();
 
-        TextButton timerStartButton = new TextButton(game.bundle.get("timerStart"), game.skin, "menu");
+        TextButton timerStartButton = new TextButton(game.bundle.get("timerStart"), game.skin, "control");
         timerStartButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -195,7 +195,7 @@ public class TimerScreen implements Screen {
                 .space(game.getPadding());
         table.row();
 
-        TextButton timerCancelButton = new TextButton(game.bundle.get("timerCancel"), game.skin, "menu");
+        TextButton timerCancelButton = new TextButton(game.bundle.get("timerCancel"), game.skin, "control");
         timerCancelButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -218,7 +218,7 @@ public class TimerScreen implements Screen {
         } else {
             timerPauseButtonText = game.bundle.get("timerResume");
         }
-        timerPauseButton = new TextButton(timerPauseButtonText, game.skin, "menu");
+        timerPauseButton = new TextButton(timerPauseButtonText, game.skin, "control");
         timerPauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

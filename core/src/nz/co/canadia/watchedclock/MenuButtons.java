@@ -7,8 +7,27 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class MenuButtons extends Table  {
 
-    public MenuButtons(final WatchedClock game) {
+    public MenuButtons(final WatchedClock game, String selected) {
         TextButton clockButton = new TextButton(game.bundle.get("clockButton"), game.skin, "menu");
+        TextButton alarmButton = new TextButton(game.bundle.get("alarmButton"), game.skin, "menu");
+        TextButton stopwatchButton = new TextButton(game.bundle.get("stopwatchButton"), game.skin, "menu");
+        TextButton timerButton = new TextButton(game.bundle.get("timerButton"), game.skin, "menu");
+
+        switch (selected) {
+            case "Alarm":
+                alarmButton.setChecked(true);
+                break;
+            case "Stopwatch":
+                stopwatchButton.setChecked(true);
+                break;
+            case "Timer":
+                timerButton.setChecked(true);
+                break;
+            default:
+                clockButton.setChecked(true);
+                break;
+        }
+
         clockButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -17,7 +36,6 @@ public class MenuButtons extends Table  {
         });
         this.add(clockButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
 
-        TextButton alarmButton = new TextButton(game.bundle.get("alarmButton"), game.skin, "menu");
         alarmButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -26,7 +44,6 @@ public class MenuButtons extends Table  {
         });
         this.add(alarmButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
 
-        TextButton stopwatchButton = new TextButton(game.bundle.get("stopwatchButton"), game.skin, "menu");
         stopwatchButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -35,7 +52,6 @@ public class MenuButtons extends Table  {
         });
         this.add(stopwatchButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
 
-        TextButton timerButton = new TextButton(game.bundle.get("timerButton"), game.skin, "menu");
         timerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -43,6 +59,5 @@ public class MenuButtons extends Table  {
             }
         });
         this.add(timerButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
-
     }
 }
