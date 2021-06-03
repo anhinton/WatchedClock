@@ -5,12 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -28,6 +28,7 @@ public class WatchedClock extends Game {
 	private long stopwatchTime;
 	private long timerRemaining;
 	private int padding;
+	private float buttonWidth;private float buttonHeight;
 
 	public WatchedClock(DateUtilities dateUtilities) {
 		this.dateUtilities = dateUtilities;
@@ -39,6 +40,8 @@ public class WatchedClock extends Game {
 		manager = new AssetManager();
 		preferences = Gdx.app.getPreferences(Constants.PREFERENCES_PATH);
 		padding = MathUtils.round(Constants.UI_PADDING * Constants.WORLD_WIDTH);
+		buttonWidth = Constants.MENU_BUTTON_WIDTH * Constants.WORLD_WIDTH;
+		buttonHeight = Constants.MENU_BUTTON_HEIGHT * Constants.WORLD_WIDTH;
 
 		currentTime = new Date();
 		// Alarm
@@ -62,12 +65,26 @@ public class WatchedClock extends Game {
 			timerRemaining = preferences.getLong("timerRemaining", 0);
 		}
 
+		// Clock label
 		FreeTypeFontGenerator inconsolataGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Inconsolata-VariableFont_wdth,wght.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter timeLabelParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		timeLabelParameter.size = MathUtils.round(Constants.TIME_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
 		BitmapFont timeLabelFont = inconsolataGenerator.generateFont(timeLabelParameter);
+
+		// Alarm Label
+		FreeTypeFontGenerator.FreeTypeFontParameter alarmLabelParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		alarmLabelParameter.size = MathUtils.round(Constants.ALARM_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
+		alarmLabelParameter.color = Constants.FONT_COLOR;
+		BitmapFont alarmLabelFont = inconsolataGenerator.generateFont(alarmLabelParameter);
+
+		// SelectBox List
+		FreeTypeFontGenerator.FreeTypeFontParameter alarmListParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		alarmListParameter.size = MathUtils.round(Constants.ALARM_LIST_FONT_SIZE * Constants.WORLD_WIDTH);
+		alarmListParameter.color = Constants.SELECTBOX_FONT_COLOR;
+		BitmapFont alarmListFont = inconsolataGenerator.generateFont(alarmListParameter);
 		inconsolataGenerator.dispose();
 
+		// Menu button
 		FreeTypeFontGenerator podkovaGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Podkova-VariableFont_wght.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter menuButtonParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		menuButtonParameter.size = MathUtils.round(Constants.MENU_BUTTON_FONT_SIZE * Constants.WORLD_WIDTH);
@@ -84,12 +101,18 @@ public class WatchedClock extends Game {
 
 		bundle = manager.get("i18n/Bundle", I18NBundle.class);
 		skin = manager.get("skin/uiskin.json", Skin.class);
-		// Create labels
+		// Labels
 		skin.add("time", new Label.LabelStyle(timeLabelFont, Constants.FONT_COLOR), Label.LabelStyle.class);
-		// Create TextButtons
+		skin.add("alarm", new Label.LabelStyle(alarmLabelFont, Constants.FONT_COLOR), Label.LabelStyle.class);
+		// TextButtons
 		TextButton.TextButtonStyle menuTextButtonStyle = new TextButton.TextButtonStyle(skin.get("default", TextButton.TextButtonStyle.class));
 		menuTextButtonStyle.font = menuButtonFont;
 		skin.add("menu", menuTextButtonStyle);
+		// SelectBox
+		SelectBox.SelectBoxStyle alarmSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
+		alarmSelectBoxStyle.font = timeLabelFont;
+		alarmSelectBoxStyle.listStyle.font = alarmListFont;
+		skin.add("alarm", alarmSelectBoxStyle);
 
 		Screen screen;
 		if (currentTime.after(alarmTime) && alarmIsSet) {
@@ -142,6 +165,14 @@ public class WatchedClock extends Game {
 
 	public int getPadding() {
 		return padding;
+	}
+
+	public float getButtonWidth() {
+		return buttonWidth;
+	}
+
+	public float getButtonHeight() {
+		return buttonHeight;
 	}
 
 	public Date getCurrentTime() {

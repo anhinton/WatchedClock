@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -38,6 +39,7 @@ public class AlarmScreen implements Screen {
         stage = new Stage(viewport);
         table = new Table();
         table.setFillParent(true);
+        table.pad(game.getPadding());
         stage.addActor(table);
 
         if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
@@ -51,9 +53,10 @@ public class AlarmScreen implements Screen {
 
     private void showInputBoxes() {
         table.clear();
+        table.align(Align.left);
 
         // ALARM
-        hourSelectBox = new SelectBox<>(game.skin, "default");
+        hourSelectBox = new SelectBox<>(game.skin, "alarm");
         Array<String> hourStringArray = new Array<>(12);
         hourStringArray.add("12");
         for (int i = 1; i < 12; i++) {
@@ -61,21 +64,21 @@ public class AlarmScreen implements Screen {
         }
         hourSelectBox.setItems(hourStringArray);
         hourSelectBox.setSelected(game.dateUtilities.formatDate("h", alarmTime));
-        table.add(hourSelectBox);
+        table.add(hourSelectBox).space(game.getPadding());
 
-        minuteSelectBox = new SelectBox<>(game.skin, "default");
+        minuteSelectBox = new SelectBox<>(game.skin, "alarm");
         Array<String> minuteStringArray = new Array<>(60);
         for (int i = 0; i < 60; i++) {
             minuteStringArray.add(game.dateUtilities.zeroPadMinutes(i));
         }
         minuteSelectBox.setItems(minuteStringArray);
         minuteSelectBox.setSelected(game.dateUtilities.formatDate("mm", alarmTime));
-        table.add(minuteSelectBox);
+        table.add(minuteSelectBox).space(game.getPadding());
 
-        periodSelectBox = new SelectBox<>(game.skin, "default");
+        periodSelectBox = new SelectBox<>(game.skin, "alarm");
         periodSelectBox.setItems(game.bundle.get("alarmAm"), game.bundle.get("alarmPm"));
         periodSelectBox.setSelected(game.dateUtilities.formatDate("a", alarmTime));
-        table.add(periodSelectBox);
+        table.add(periodSelectBox).space(game.getPadding());
         table.row();
 
         String setAlarmButtonText;
@@ -84,15 +87,17 @@ public class AlarmScreen implements Screen {
         } else {
             setAlarmButtonText = game.bundle.get("alarmButtonSet");
         }
-        setAlarmButton = new TextButton(setAlarmButtonText, game.skin, "default");
+        setAlarmButton = new TextButton(setAlarmButtonText, game.skin, "menu");
         setAlarmButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 toggleAlarm();
             }
         });
-
-        table.add(setAlarmButton).colspan(3);
+        table.add(setAlarmButton)
+                .colspan(3)
+                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .space(game.getPadding());
         table.row();
 
         table.add(menuButtons).colspan(3);
@@ -113,27 +118,29 @@ public class AlarmScreen implements Screen {
 
         unsetAlarm();
 
-        Label alarmPlayingLabel = new Label(game.bundle.get("alarmPlaying"), game.skin, "default");
-        table.add(alarmPlayingLabel);
+        Label alarmPlayingLabel = new Label(game.bundle.get("alarmPlaying"), game.skin, "alarm");
+        table.add(alarmPlayingLabel).space(game.getPadding());
         table.row();
 
         Label alarmTimeLabel = new Label(
                 game.dateUtilities.formatDate(Constants.SHORT_TIME_FORMAT, alarmTime),
-                game.skin, "default");
-        table.add(alarmTimeLabel);
+                game.skin, "time");
+        table.add(alarmTimeLabel).space(game.getPadding());
         table.row();
 
-        TextButton alarmStopButton = new TextButton(game.bundle.get("alarmStop"), game.skin, "default");
+        TextButton alarmStopButton = new TextButton(game.bundle.get("alarmStop"), game.skin, "menu");
         alarmStopButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showInputBoxes();
             }
         });
-        table.add(alarmStopButton);
+        table.add(alarmStopButton)
+                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .space(game.getPadding());
         table.row();
 
-        table.add(menuButtons);
+        table.add(menuButtons).space(game.getPadding());
     }
 
     private void setAlarmTime() {
