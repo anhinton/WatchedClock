@@ -72,7 +72,6 @@ public class WatchedClock extends Game {
 		manager.load("i18n/Bundle", I18NBundle.class);
 		fontLoader.loadTimeLabelFont(manager);
 		fontLoader.loadAlarmLabelFont(manager);
-		fontLoader.loadAlarmListFont(manager);
 		fontLoader.loadMenuButtonFont(manager);
 		manager.finishLoading();
 
@@ -90,19 +89,18 @@ public class WatchedClock extends Game {
 		TextButton.TextButtonStyle controlTextButtonStyle = new TextButton.TextButtonStyle(skin.get("default", TextButton.TextButtonStyle.class));
 		controlTextButtonStyle.font = fontLoader.getMenuButtonFont(manager);
 		skin.add("control", controlTextButtonStyle);
-
 		// SelectBox
 		SelectBox.SelectBoxStyle alarmSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
 		alarmSelectBoxStyle.font = fontLoader.getTimeLabelFont(manager);
 		alarmSelectBoxStyle.fontColor = Constants.SELECTBOX_FONT_COLOR;
-		alarmSelectBoxStyle.listStyle.font = fontLoader.getAlarmListFont(manager);
+		alarmSelectBoxStyle.listStyle.font = fontLoader.getAlarmLabelFont(manager);
 		alarmSelectBoxStyle.listStyle.fontColorSelected = Constants.SELECTBOX_FONT_COLOR;
 		alarmSelectBoxStyle.listStyle.fontColorUnselected = Constants.SELECTBOX_FONT_COLOR;
 		skin.add("alarm", alarmSelectBoxStyle);
 		SelectBox.SelectBoxStyle timerSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
 		timerSelectBoxStyle.font = fontLoader.getAlarmLabelFont(manager);
 		timerSelectBoxStyle.fontColor = Constants.SELECTBOX_FONT_COLOR;
-		timerSelectBoxStyle.listStyle.font = fontLoader.getAlarmListFont(manager);
+		timerSelectBoxStyle.listStyle.font = fontLoader.getAlarmLabelFont(manager);
 		timerSelectBoxStyle.listStyle.fontColorSelected = Constants.SELECTBOX_FONT_COLOR;
 		timerSelectBoxStyle.listStyle.fontColorUnselected = Constants.SELECTBOX_FONT_COLOR;
 		skin.add("timer", timerSelectBoxStyle);

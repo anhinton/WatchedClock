@@ -16,6 +16,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new WatchedClock(new HtmlDateUtilities());
+                return new WatchedClock(new HtmlDateUtilities(), new HtmlFontLoader());
         }
 }

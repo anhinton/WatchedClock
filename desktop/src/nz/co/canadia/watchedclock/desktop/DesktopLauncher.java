@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle(Constants.GAME_NAME);
 		config.setWindowedMode(Constants.DESKTOP_WIDTH, Constants.DESKTOP_HEIGHT);
+		config.setResizable(false);
 
 		new Lwjgl3Application(new WatchedClock(new DesktopDateUtilities(), new DesktopFontloader()), config);
 	}

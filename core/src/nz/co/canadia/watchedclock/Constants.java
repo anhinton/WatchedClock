@@ -24,7 +24,6 @@ public class Constants {
     public static final float TIME_LABEL_FONT_SIZE = .15f;
     public static final float MENU_BUTTON_FONT_SIZE = .058f;
     public static final float ALARM_LABEL_FONT_SIZE = 0.058f;
-    public static final float ALARM_LIST_FONT_SIZE = .058f;
     public static final float BUTTON_SHADOW_SIZE = .005f;
     public static final float UI_PADDING = .03f;
     public static final float MENU_BUTTON_WIDTH = .2f;

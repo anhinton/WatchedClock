@@ -12,10 +12,6 @@ public interface FontLoader {
 
     BitmapFont getAlarmLabelFont(AssetManager manager);
 
-    void loadAlarmListFont(AssetManager manager);
-
-    BitmapFont getAlarmListFont(AssetManager manager);
-
     void loadMenuButtonFont(AssetManager manager);
 
     BitmapFont getMenuButtonFont(AssetManager manager);

@@ -52,20 +52,6 @@ public class DesktopFontloader implements FontLoader {
     }
 
     @Override
-    public void loadAlarmListFont(AssetManager manager) {
-        setLoader(manager);
-        FreetypeFontLoader.FreeTypeFontLoaderParameter alarmListFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        alarmListFont.fontFileName = "fonts/Inconsolata-VariableFont_wdth,wght.ttf";
-        alarmListFont.fontParameters.size = MathUtils.round(Constants.ALARM_LIST_FONT_SIZE * Constants.WORLD_WIDTH);
-        manager.load("fonts/InconsolataAlarmList.ttf", BitmapFont.class, alarmListFont);
-    }
-
-    @Override
-    public BitmapFont getAlarmListFont(AssetManager manager) {
-        return manager.get("fonts/InconsolataAlarmList.ttf", BitmapFont.class);
-    }
-
-    @Override
     public void loadMenuButtonFont(AssetManager manager) {
         setLoader(manager);
         FreetypeFontLoader.FreeTypeFontLoaderParameter menuButtonFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
