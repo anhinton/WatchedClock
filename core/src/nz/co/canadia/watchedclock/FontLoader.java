@@ -15,4 +15,8 @@ public interface FontLoader {
     void loadMenuButtonFont(AssetManager manager);
 
     BitmapFont getMenuButtonFont(AssetManager manager);
+
+    void loadBoxListFont(AssetManager manager);
+
+    BitmapFont getBoxListFont(AssetManager manager);
 }

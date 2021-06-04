@@ -37,10 +37,10 @@ public class IOSFontLoader implements FontLoader {
     @Override
     public void loadAlarmLabelFont(AssetManager manager) {
         setLoader(manager);
-        FreetypeFontLoader.FreeTypeFontLoaderParameter alarmLabel = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        alarmLabel.fontFileName = "fonts/Inconsolata-VariableFont_wdth,wght.ttf";
-        alarmLabel.fontParameters.size = MathUtils.round(Constants.ALARM_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
-        manager.load("fonts/InconsolataAlarmLabel.ttf", BitmapFont.class, alarmLabel);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter alarmLabelFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        alarmLabelFont.fontFileName = "fonts/Inconsolata-VariableFont_wdth,wght.ttf";
+        alarmLabelFont.fontParameters.size = MathUtils.round(Constants.ALARM_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
+        manager.load("fonts/InconsolataAlarmLabel.ttf", BitmapFont.class, alarmLabelFont);
     }
 
     @Override
@@ -64,5 +64,19 @@ public class IOSFontLoader implements FontLoader {
     @Override
     public BitmapFont getMenuButtonFont(AssetManager manager) {
         return manager.get("fonts/PodkovaMenuButton.ttf", BitmapFont.class);
+    }
+
+    @Override
+    public void loadBoxListFont(AssetManager manager) {
+        setLoader(manager);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter boxListFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        boxListFont.fontFileName = "fonts/Inconsolata-VariableFont_wdth,wght.ttf";
+        boxListFont.fontParameters.size = MathUtils.round(Constants.BOX_LIST_FONT_SIZE * Constants.WORLD_WIDTH);
+        manager.load("fonts/InconsolataBoxList.ttf", BitmapFont.class, boxListFont);
+    }
+
+    @Override
+    public BitmapFont getBoxListFont(AssetManager manager) {
+        return manager.get("fonts/InconsolataBoxList.ttf", BitmapFont.class);
     }
 }

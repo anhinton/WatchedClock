@@ -35,4 +35,14 @@ public class HtmlFontLoader implements FontLoader {
     public BitmapFont getMenuButtonFont(AssetManager manager) {
         return manager.get("fonts/menuButton.fnt", BitmapFont.class);
     }
+
+    @Override
+    public void loadBoxListFont(AssetManager manager) {
+        manager.load("fonts/boxList.fnt", BitmapFont.class);
+    }
+
+    @Override
+    public BitmapFont getBoxListFont(AssetManager manager) {
+        return manager.get("fonts/boxList.fnt", BitmapFont.class);
+    }
 }
