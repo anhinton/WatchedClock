@@ -12,6 +12,6 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
-		initialize(new WatchedClock(new AndroidDateUtilities()), config);
+		initialize(new WatchedClock(new AndroidDateUtilities(), new AndroidFontLoader()), config);
 	}
 }
