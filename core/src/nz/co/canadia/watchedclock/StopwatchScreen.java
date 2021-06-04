@@ -39,11 +39,13 @@ public class StopwatchScreen implements Screen {
         table.pad(game.getPadding());
         stage.addActor(table);
 
+        Table contentTable = new Table();
+
         stopwatchLabel = new Label(stopwatchTimeText, game.skin, "time");
-        table.add(stopwatchLabel)
+        contentTable.add(stopwatchLabel)
                 .colspan(2)
                 .space(game.getPadding());
-        table.row();
+        contentTable.row();
 
         String stopwatchStartButtonText;
         if (stopwatchIsRunning) {
@@ -59,9 +61,9 @@ public class StopwatchScreen implements Screen {
                 toggleStopwatch();
             }
         });
-        table.add(stopwatchStartButton)
+        contentTable.add(stopwatchStartButton)
                 .align(Align.right)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
 
         TextButton stopwatchRestartButton = new TextButton(game.bundle.get("stopwatchRestart"),
@@ -72,12 +74,13 @@ public class StopwatchScreen implements Screen {
                 resetStopwatch();
             }
         });
-        table.add(stopwatchRestartButton)
+        contentTable.add(stopwatchRestartButton)
                 .align(Align.left)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
-        table.row();
 
+        table.add(contentTable).expand();
+        table.row();
         table.add(new MenuButtons(game, "Stopwatch")).colspan(2);
 
         Gdx.input.setInputProcessor(stage);

@@ -34,7 +34,7 @@ public class MenuButtons extends Table  {
                 game.setScreen(new ClockScreen(game));
             }
         });
-        this.add(clockButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
+        this.add(clockButton).prefSize(game.getMenuButtonWidth(), game.getButtonHeight()).space(game.getPadding());
 
         alarmButton.addListener(new ChangeListener() {
             @Override
@@ -42,7 +42,7 @@ public class MenuButtons extends Table  {
                 game.setScreen(new AlarmScreen(game));
             }
         });
-        this.add(alarmButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
+        this.add(alarmButton).prefSize(game.getMenuButtonWidth(), game.getButtonHeight()).space(game.getPadding());
 
         stopwatchButton.addListener(new ChangeListener() {
             @Override
@@ -50,7 +50,7 @@ public class MenuButtons extends Table  {
                 game.setScreen(new StopwatchScreen(game));
             }
         });
-        this.add(stopwatchButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
+        this.add(stopwatchButton).prefSize(game.getMenuButtonWidth(), game.getButtonHeight()).space(game.getPadding());
 
         timerButton.addListener(new ChangeListener() {
             @Override
@@ -58,6 +58,6 @@ public class MenuButtons extends Table  {
                 game.setScreen(new TimerScreen(game));
             }
         });
-        this.add(timerButton).prefSize(game.getButtonWidth(), game.getButtonHeight()).space(game.getPadding());
+        this.add(timerButton).prefSize(game.getMenuButtonWidth(), game.getButtonHeight()).space(game.getPadding());
     }
 }

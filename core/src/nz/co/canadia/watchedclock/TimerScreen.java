@@ -20,12 +20,11 @@ import java.util.Date;
 
 public class TimerScreen implements Screen {
     private final Stage stage;
-    private final MenuButtons menuButtons;
+    private final Table contentTable;
     private SelectBox<String> hourSelectBox;
     private SelectBox<String> minuteSelectBox;
     private SelectBox<String> secondSelectBox;
     private final WatchedClock game;
-    private final Table table;
     private boolean timerIsRunning;
     private int timerHours;
     private int timerMinutes;
@@ -35,7 +34,6 @@ public class TimerScreen implements Screen {
 
     public TimerScreen(final WatchedClock game) {
         this.game = game;
-        menuButtons = new MenuButtons(game, "Timer");
         timerHours = game.preferences.getInteger("timerHours", 0);
         timerMinutes = game.preferences.getInteger("timerMinutes", 0);
         timerSeconds = game.preferences.getInteger("timerSeconds", 0);
@@ -44,10 +42,12 @@ public class TimerScreen implements Screen {
 
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
-        table = new Table();
+        Table table = new Table();
         table.setFillParent(true);
         table.pad(game.getPadding());
         stage.addActor(table);
+
+        contentTable = new Table();
 
         long timerRemaining = game.getTimerRemaining();
         if (timerIsRunning) {
@@ -64,11 +64,15 @@ public class TimerScreen implements Screen {
             }
         }
 
+        table.add(contentTable).expand();
+        table.row();
+        table.add(new MenuButtons(game, "Timer")).colspan(2);
+
         Gdx.input.setInputProcessor(stage);
     }
 
     private void playAlarm() {
-        table.clear();
+        contentTable.clear();
 
         timerIsRunning = false;
         game.setTimerRemaining(0);
@@ -77,12 +81,12 @@ public class TimerScreen implements Screen {
         game.preferences.flush();
 
         Label timerFinishedLabel = new Label(game.bundle.get("timerFinished"), game.skin, "alarm");
-        table.add(timerFinishedLabel).space(game.getPadding());
-        table.row();
+        contentTable.add(timerFinishedLabel).space(game.getPadding());
+        contentTable.row();
 
         Label timerRemainingLabel = new Label("0:00:00", game.skin, "time");
-        table.add(timerRemainingLabel).space(game.getPadding());
-        table.row();
+        contentTable.add(timerRemainingLabel).space(game.getPadding());
+        contentTable.row();
 
         TextButton timerResetButton = new TextButton(game.bundle.get("timerReset"),
                 game.skin, "control");
@@ -92,16 +96,13 @@ public class TimerScreen implements Screen {
                 showInputBoxes();
             }
         });
-        table.add(timerResetButton)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+        contentTable.add(timerResetButton)
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
-        table.row();
-
-        table.add(menuButtons);
     }
 
     private void showInputBoxes() {
-        table.clear();
+        contentTable.clear();
 
         hourSelectBox = new SelectBox<>(game.skin, "timer");
         final Array<String> hourStringArray = new Array<>(24);
@@ -110,10 +111,10 @@ public class TimerScreen implements Screen {
         }
         hourSelectBox.setItems(hourStringArray);
         hourSelectBox.setSelected(String.valueOf(timerHours));
-        table.add(hourSelectBox).space(game.getPadding());
+        contentTable.add(hourSelectBox).space(game.getPadding());
 
         Label hourLabel = new Label(game.bundle.get("timerHours"), game.skin, "alarm");
-        table.add(hourLabel).space(game.getPadding());
+        contentTable.add(hourLabel).space(game.getPadding());
 
         minuteSelectBox = new SelectBox<>(game.skin, "timer");
         Array<String> minuteStringArray = new Array<>(60);
@@ -122,20 +123,20 @@ public class TimerScreen implements Screen {
         }
         minuteSelectBox.setItems(minuteStringArray);
         minuteSelectBox.setSelected(String.valueOf(timerMinutes));
-        table.add(minuteSelectBox).space(game.getPadding());
+        contentTable.add(minuteSelectBox).space(game.getPadding());
 
         Label minuteLabel = new Label(game.bundle.get("timerMinutes"), game.skin, "alarm");
-        table.add(minuteLabel).space(game.getPadding());
+        contentTable.add(minuteLabel).space(game.getPadding());
 
         secondSelectBox = new SelectBox<>(game.skin, "timer");
         secondSelectBox.setItems(minuteStringArray);
         secondSelectBox.setSelected(String.valueOf(timerSeconds));
-        table.add(secondSelectBox).space(game.getPadding());
+        contentTable.add(secondSelectBox).space(game.getPadding());
 
         Label secondLabel = new Label(game.bundle.get("timerSeconds"), game.skin, "alarm");
-        table.add(secondLabel).space(game.getPadding());
+        contentTable.add(secondLabel).space(game.getPadding());
 
-        table.row();
+        contentTable.row();
 
         TextButton timerStartButton = new TextButton(game.bundle.get("timerStart"), game.skin, "control");
         timerStartButton.addListener(new ChangeListener() {
@@ -144,13 +145,10 @@ public class TimerScreen implements Screen {
                 startTimer();
             }
         });
-        table.add(timerStartButton)
+        contentTable.add(timerStartButton)
                 .colspan(6)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
-        table.row();
-
-        table.add(menuButtons).colspan(6);
     }
 
     private void startTimer() {
@@ -179,7 +177,7 @@ public class TimerScreen implements Screen {
     }
 
     private void showTimer() {
-        table.clear();
+        contentTable.clear();
 
         long timerRemaining = MathUtils.clamp(game.getTimerRemaining(), 0, game.getTimerRemaining());
 
@@ -190,10 +188,10 @@ public class TimerScreen implements Screen {
                 + game.dateUtilities.zeroPadMinutes(seconds);
 
         Label timerLabel = new Label(timerRemainingText, game.skin, "time");
-        table.add(timerLabel)
+        contentTable.add(timerLabel)
                 .colspan(2)
                 .space(game.getPadding());
-        table.row();
+        contentTable.row();
 
         TextButton timerCancelButton = new TextButton(game.bundle.get("timerCancel"), game.skin, "control");
         timerCancelButton.addListener(new ChangeListener() {
@@ -207,9 +205,9 @@ public class TimerScreen implements Screen {
                 showInputBoxes();
             }
         });
-        table.add(timerCancelButton)
+        contentTable.add(timerCancelButton)
                 .align(Align.right)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
 
         String timerPauseButtonText;
@@ -225,13 +223,10 @@ public class TimerScreen implements Screen {
                 toggleTimer();
             }
         });
-        table.add(timerPauseButton)
+        contentTable.add(timerPauseButton)
                 .align(Align.left)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
-        table.row();
-
-        table.add(menuButtons).colspan(2);
     }
 
     private void toggleTimer() {

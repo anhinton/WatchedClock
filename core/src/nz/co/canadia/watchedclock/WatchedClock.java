@@ -28,7 +28,9 @@ public class WatchedClock extends Game {
 	private long stopwatchTime;
 	private long timerRemaining;
 	private int padding;
-	private float buttonWidth;private float buttonHeight;
+	private float menuButtonWidth;
+	private float controlButtonWidth;
+	private float buttonHeight;
 
 	public WatchedClock(DateUtilities dateUtilities) {
 		this.dateUtilities = dateUtilities;
@@ -40,8 +42,9 @@ public class WatchedClock extends Game {
 		manager = new AssetManager();
 		preferences = Gdx.app.getPreferences(Constants.PREFERENCES_PATH);
 		padding = MathUtils.round(Constants.UI_PADDING * Constants.WORLD_WIDTH);
-		buttonWidth = Constants.MENU_BUTTON_WIDTH * Constants.WORLD_WIDTH;
-		buttonHeight = Constants.MENU_BUTTON_HEIGHT * Constants.WORLD_WIDTH;
+		menuButtonWidth = Constants.MENU_BUTTON_WIDTH * Constants.WORLD_WIDTH;
+		controlButtonWidth = Constants.CONTROL_BUTTON_WIDTH * Constants.WORLD_WIDTH;
+		buttonHeight = Constants.BUTTON_HEIGHT * Constants.WORLD_WIDTH;
 
 		currentTime = new Date();
 		// Alarm
@@ -179,8 +182,12 @@ public class WatchedClock extends Game {
 		return padding;
 	}
 
-	public float getButtonWidth() {
-		return buttonWidth;
+	public float getMenuButtonWidth() {
+		return menuButtonWidth;
+	}
+
+	public float getControlButtonWidth() {
+		return controlButtonWidth;
 	}
 
 	public float getButtonHeight() {

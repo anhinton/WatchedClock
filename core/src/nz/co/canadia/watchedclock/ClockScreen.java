@@ -25,7 +25,9 @@ public class ClockScreen implements Screen {
         Label clockLabel = new Label(
                 game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()),
                 game.skin, "time");
-        table.add(clockLabel).space(game.getPadding());
+        table.add(clockLabel)
+                .expand()
+                .space(game.getPadding());
         table.row();
 
         table.add(new MenuButtons(game, "Clock"));

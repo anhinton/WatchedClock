@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -19,28 +18,31 @@ import java.util.Date;
 
 public class AlarmScreen implements Screen {
     private final Stage stage;
-    private final MenuButtons menuButtons;
     private SelectBox<String> hourSelectBox;
     private SelectBox<String> minuteSelectBox;
     private SelectBox<String> periodSelectBox;
     private final WatchedClock game;
     private TextButton setAlarmButton;
-    private final Table table;
+    private final Table contentTable;
     private Date alarmTime;
     private boolean alarmIsSet;
 
     public AlarmScreen(final WatchedClock game) {
         this.game = game;
-        menuButtons = new MenuButtons(game, "Alarm");
         alarmTime = new Date(game.preferences.getLong("alarmTime", 0));
         alarmIsSet = game.preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
 
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
-        table = new Table();
+        Table table = new Table();
         table.setFillParent(true);
         table.pad(game.getPadding());
         stage.addActor(table);
+
+        contentTable = new Table();
+        table.add(contentTable)
+                .expand()
+                .space(game.getPadding());
 
         if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
             playAlarm();
@@ -48,12 +50,14 @@ public class AlarmScreen implements Screen {
             showInputBoxes();
         }
 
+        table.row();
+        table.add(new MenuButtons(game, "Alarm"));
+
         Gdx.input.setInputProcessor(stage);
     }
 
     private void showInputBoxes() {
-        table.clear();
-        table.align(Align.left);
+        contentTable.clear();
 
         // ALARM
         hourSelectBox = new SelectBox<>(game.skin, "alarm");
@@ -64,7 +68,7 @@ public class AlarmScreen implements Screen {
         }
         hourSelectBox.setItems(hourStringArray);
         hourSelectBox.setSelected(game.dateUtilities.formatDate("h", alarmTime));
-        table.add(hourSelectBox).space(game.getPadding());
+        contentTable.add(hourSelectBox).space(game.getPadding());
 
         minuteSelectBox = new SelectBox<>(game.skin, "alarm");
         Array<String> minuteStringArray = new Array<>(60);
@@ -73,13 +77,13 @@ public class AlarmScreen implements Screen {
         }
         minuteSelectBox.setItems(minuteStringArray);
         minuteSelectBox.setSelected(game.dateUtilities.formatDate("mm", alarmTime));
-        table.add(minuteSelectBox).space(game.getPadding());
+        contentTable.add(minuteSelectBox).space(game.getPadding());
 
         periodSelectBox = new SelectBox<>(game.skin, "alarm");
         periodSelectBox.setItems(game.bundle.get("alarmAm"), game.bundle.get("alarmPm"));
         periodSelectBox.setSelected(game.dateUtilities.formatDate("a", alarmTime));
-        table.add(periodSelectBox).space(game.getPadding());
-        table.row();
+        contentTable.add(periodSelectBox).space(game.getPadding());
+        contentTable.row();
 
         String setAlarmButtonText;
         if (alarmIsSet) {
@@ -94,13 +98,11 @@ public class AlarmScreen implements Screen {
                 toggleAlarm();
             }
         });
-        table.add(setAlarmButton)
+        contentTable.add(setAlarmButton)
                 .colspan(3)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
-        table.row();
-
-        table.add(menuButtons).colspan(3);
+        contentTable.row();
     }
 
     private void toggleAlarm() {
@@ -114,19 +116,19 @@ public class AlarmScreen implements Screen {
     }
 
     private void playAlarm() {
-        table.clear();
+        contentTable.clear();
 
         unsetAlarm();
 
         Label alarmPlayingLabel = new Label(game.bundle.get("alarmPlaying"), game.skin, "alarm");
-        table.add(alarmPlayingLabel).space(game.getPadding());
-        table.row();
+        contentTable.add(alarmPlayingLabel).space(game.getPadding());
+        contentTable.row();
 
         Label alarmTimeLabel = new Label(
                 game.dateUtilities.formatDate(Constants.SHORT_TIME_FORMAT, alarmTime),
                 game.skin, "time");
-        table.add(alarmTimeLabel).space(game.getPadding());
-        table.row();
+        contentTable.add(alarmTimeLabel).space(game.getPadding());
+        contentTable.row();
 
         TextButton alarmStopButton = new TextButton(game.bundle.get("alarmStop"), game.skin, "control");
         alarmStopButton.addListener(new ChangeListener() {
@@ -135,12 +137,10 @@ public class AlarmScreen implements Screen {
                 showInputBoxes();
             }
         });
-        table.add(alarmStopButton)
-                .prefSize(game.getButtonWidth(), game.getButtonHeight())
+        contentTable.add(alarmStopButton)
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
                 .space(game.getPadding());
-        table.row();
-
-        table.add(menuButtons).space(game.getPadding());
+        contentTable.row();
     }
 
     private void setAlarmTime() {
