@@ -5,9 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
@@ -19,11 +17,12 @@ import java.util.Date;
 
 public class WatchedClock extends Game {
 	AssetManager manager;
-	SpriteBatch batch;
-	I18NBundle bundle;
 	DateUtilities dateUtilities;
+	FontLoader fontLoader;
+	I18NBundle bundle;
 	Preferences preferences;
 	Skin skin;
+	SpriteBatch batch;
 	private Date currentTime;
 	private long stopwatchTime;
 	private long timerRemaining;
@@ -32,8 +31,9 @@ public class WatchedClock extends Game {
 	private float controlButtonWidth;
 	private float buttonHeight;
 
-	public WatchedClock(DateUtilities dateUtilities) {
+	public WatchedClock(DateUtilities dateUtilities, FontLoader fontLoader) {
 		this.dateUtilities = dateUtilities;
+		this.fontLoader = fontLoader;
 	}
 
 	@Override
@@ -68,63 +68,41 @@ public class WatchedClock extends Game {
 			timerRemaining = preferences.getLong("timerRemaining", 0);
 		}
 
-		// Clock label
-		FreeTypeFontGenerator inconsolataGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Inconsolata-VariableFont_wdth,wght.ttf"));
-		FreeTypeFontGenerator.FreeTypeFontParameter timeLabelParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		timeLabelParameter.size = MathUtils.round(Constants.TIME_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
-		BitmapFont timeLabelFont = inconsolataGenerator.generateFont(timeLabelParameter);
-
-		// Alarm Label
-		FreeTypeFontGenerator.FreeTypeFontParameter alarmLabelParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		alarmLabelParameter.size = MathUtils.round(Constants.ALARM_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
-		BitmapFont alarmLabelFont = inconsolataGenerator.generateFont(alarmLabelParameter);
-
-		// SelectBox List
-		FreeTypeFontGenerator.FreeTypeFontParameter alarmListParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		alarmListParameter.size = MathUtils.round(Constants.ALARM_LIST_FONT_SIZE * Constants.WORLD_WIDTH);
-		BitmapFont alarmListFont = inconsolataGenerator.generateFont(alarmListParameter);
-		inconsolataGenerator.dispose();
-
-		// Menu button
-		FreeTypeFontGenerator podkovaGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Podkova-VariableFont_wght.ttf"));
-		FreeTypeFontGenerator.FreeTypeFontParameter menuButtonParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		menuButtonParameter.size = MathUtils.round(Constants.MENU_BUTTON_FONT_SIZE * Constants.WORLD_WIDTH);
-		menuButtonParameter.color = Constants.BUTTON_FONT_COLOR;
-		menuButtonParameter.shadowColor = Constants.BUTTON_FONT_SHADOW_COLOR;
-		menuButtonParameter.shadowOffsetX = MathUtils.round(Constants.BUTTON_SHADOW_SIZE * Constants.WORLD_WIDTH);
-		menuButtonParameter.shadowOffsetY = MathUtils.round(Constants.BUTTON_SHADOW_SIZE * Constants.WORLD_WIDTH);
-		BitmapFont menuButtonFont = podkovaGenerator.generateFont(menuButtonParameter);
-		podkovaGenerator.dispose();
-
 		manager.load("skin/uiskin.json", Skin.class);
 		manager.load("i18n/Bundle", I18NBundle.class);
+		fontLoader.loadTimeLabelFont(manager);
+		fontLoader.loadAlarmLabelFont(manager);
+		fontLoader.loadAlarmListFont(manager);
+		fontLoader.loadMenuButtonFont(manager);
 		manager.finishLoading();
 
 		bundle = manager.get("i18n/Bundle", I18NBundle.class);
 		skin = manager.get("skin/uiskin.json", Skin.class);
 		// Labels
-		skin.add("time", new Label.LabelStyle(timeLabelFont, Constants.FONT_COLOR), Label.LabelStyle.class);
-		skin.add("alarm", new Label.LabelStyle(alarmLabelFont, Constants.FONT_COLOR), Label.LabelStyle.class);
+		skin.add("time", new Label.LabelStyle(fontLoader.getTimeLabelFont(manager),
+				Constants.FONT_COLOR), Label.LabelStyle.class);
+		skin.add("alarm", new Label.LabelStyle(fontLoader.getAlarmLabelFont(manager),
+				Constants.FONT_COLOR), Label.LabelStyle.class);
 		// TextButtons
 		TextButton.TextButtonStyle menuTextButtonStyle = new TextButton.TextButtonStyle(skin.get("toggle", TextButton.TextButtonStyle.class));
-		menuTextButtonStyle.font = menuButtonFont;
+		menuTextButtonStyle.font = fontLoader.getMenuButtonFont(manager);
 		skin.add("menu", menuTextButtonStyle);
 		TextButton.TextButtonStyle controlTextButtonStyle = new TextButton.TextButtonStyle(skin.get("default", TextButton.TextButtonStyle.class));
-		controlTextButtonStyle.font = menuButtonFont;
+		controlTextButtonStyle.font = fontLoader.getMenuButtonFont(manager);
 		skin.add("control", controlTextButtonStyle);
 
 		// SelectBox
 		SelectBox.SelectBoxStyle alarmSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
-		alarmSelectBoxStyle.font = timeLabelFont;
+		alarmSelectBoxStyle.font = fontLoader.getTimeLabelFont(manager);
 		alarmSelectBoxStyle.fontColor = Constants.SELECTBOX_FONT_COLOR;
-		alarmSelectBoxStyle.listStyle.font = alarmListFont;
+		alarmSelectBoxStyle.listStyle.font = fontLoader.getAlarmListFont(manager);
 		alarmSelectBoxStyle.listStyle.fontColorSelected = Constants.SELECTBOX_FONT_COLOR;
 		alarmSelectBoxStyle.listStyle.fontColorUnselected = Constants.SELECTBOX_FONT_COLOR;
 		skin.add("alarm", alarmSelectBoxStyle);
 		SelectBox.SelectBoxStyle timerSelectBoxStyle = new SelectBox.SelectBoxStyle(skin.get("default", SelectBox.SelectBoxStyle.class));
-		timerSelectBoxStyle.font = alarmLabelFont;
+		timerSelectBoxStyle.font = fontLoader.getAlarmLabelFont(manager);
 		timerSelectBoxStyle.fontColor = Constants.SELECTBOX_FONT_COLOR;
-		timerSelectBoxStyle.listStyle.font = alarmListFont;
+		timerSelectBoxStyle.listStyle.font = fontLoader.getAlarmListFont(manager);
 		timerSelectBoxStyle.listStyle.fontColorSelected = Constants.SELECTBOX_FONT_COLOR;
 		timerSelectBoxStyle.listStyle.fontColorUnselected = Constants.SELECTBOX_FONT_COLOR;
 		skin.add("timer", timerSelectBoxStyle);
