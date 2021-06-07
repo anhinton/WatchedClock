@@ -144,6 +144,12 @@ public class WatchedClock extends Game {
 	}
 
 	@Override
+	public void resume() {
+		super.resume();
+		currentTime = new Date();
+	}
+
+	@Override
 	public void setScreen(Screen screen) {
 		super.setScreen(screen);
 		preferences.putString("currentScreen", screen.getClass().getSimpleName());

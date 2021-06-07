@@ -54,6 +54,7 @@ public class ClockScreen implements Screen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         clockLabel.setText(game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()));
+        Gdx.app.log("ClockScreen", "resize method called");
     }
 
     @Override
@@ -63,6 +64,8 @@ public class ClockScreen implements Screen {
 
     @Override
     public void resume() {
+        Gdx.app.log("ClockScreen", "resume method called");
+        clockLabel.setText(game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()));
     }
 
     @Override
