@@ -11,9 +11,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class ClockScreen implements Screen {
     private final Stage stage;
+    private final Label clockLabel;
+    private final WatchedClock game;
 
     public ClockScreen(WatchedClock game) {
-
+        this.game = game;
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
         Table table = new Table();
@@ -22,8 +24,8 @@ public class ClockScreen implements Screen {
         stage.addActor(table);
 
         // CLOCK
-        Label clockLabel = new Label(
-                game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()),
+        clockLabel = new Label(
+                "", // game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()),
                 game.skin, "time");
         table.add(clockLabel)
                 .expand()
@@ -51,6 +53,7 @@ public class ClockScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+        clockLabel.setText(game.dateUtilities.formatDate(Constants.CLOCK_TIME_FORMAT, game.getCurrentTime()));
     }
 
     @Override
@@ -60,7 +63,6 @@ public class ClockScreen implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override
