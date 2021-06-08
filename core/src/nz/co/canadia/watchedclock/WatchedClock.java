@@ -5,13 +5,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.Date;
@@ -53,6 +58,11 @@ public class WatchedClock extends Game {
 
 		updateTimes();
 
+		TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
+		param.minFilter = Texture.TextureFilter.Linear;
+		param.magFilter = Texture.TextureFilter.Linear;
+		manager.load("graphics/info_icon.png", Texture.class, param);
+
 		manager.load("skin/uiskin.json", Skin.class);
 		manager.load("i18n/Bundle", I18NBundle.class);
 		manager.load("sounds/alarm.wav", Sound.class);
@@ -70,6 +80,14 @@ public class WatchedClock extends Game {
 				Constants.FONT_COLOR), Label.LabelStyle.class);
 		skin.add("alarm", new Label.LabelStyle(fontLoader.getAlarmLabelFont(manager),
 				Constants.FONT_COLOR), Label.LabelStyle.class);
+		// ImageButtons
+		TextureRegionDrawable infoIconDrawable = new TextureRegionDrawable(manager.get("graphics/info_icon.png", Texture.class));
+		infoIconDrawable.setMinSize(Constants.INFO_ICON_SIZE * Constants.WORLD_WIDTH,
+				Constants.INFO_ICON_SIZE * Constants.WORLD_WIDTH);
+		skin.add("info_icon", infoIconDrawable);
+		ImageButton.ImageButtonStyle infoButtonStyle = new ImageButton.ImageButtonStyle(skin.get("default", Button.ButtonStyle.class));
+		infoButtonStyle.imageUp = infoIconDrawable;
+		skin.add("info", infoButtonStyle);
 		// TextButtons
 		TextButton.TextButtonStyle menuTextButtonStyle = new TextButton.TextButtonStyle(skin.get("toggle", TextButton.TextButtonStyle.class));
 		menuTextButtonStyle.font = fontLoader.getMenuButtonFont(manager);

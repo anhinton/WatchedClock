@@ -30,6 +30,7 @@ public class Constants {
     public static final float MENU_BUTTON_WIDTH = .2f;
     public static final float CONTROL_BUTTON_WIDTH = .4f;
     public static final float BUTTON_HEIGHT = .1f;
+    public static final float INFO_ICON_SIZE = .058f;
 
     public static final String CLOCK_TIME_FORMAT = "h:mm:ss a";
     public static final String SHORT_TIME_FORMAT = "h:mm a";
