@@ -115,6 +115,12 @@ public class TimerScreen implements Screen {
         }
         hourSelectBox.setItems(hourStringArray);
         hourSelectBox.setSelected(String.valueOf(timerHours));
+        hourSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setTimerHours(true);
+            }
+        });
         contentTable.add(hourSelectBox).space(game.getPadding());
 
         Label hourLabel = new Label(game.bundle.get("timerHours"), game.skin, "alarm");
@@ -127,6 +133,12 @@ public class TimerScreen implements Screen {
         }
         minuteSelectBox.setItems(minuteStringArray);
         minuteSelectBox.setSelected(String.valueOf(timerMinutes));
+        minuteSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setTimerMinutes(true);
+            }
+        });
         contentTable.add(minuteSelectBox).space(game.getPadding());
 
         Label minuteLabel = new Label(game.bundle.get("timerMinutes"), game.skin, "alarm");
@@ -135,6 +147,12 @@ public class TimerScreen implements Screen {
         secondSelectBox = new SelectBox<>(game.skin, "timer");
         secondSelectBox.setItems(minuteStringArray);
         secondSelectBox.setSelected(String.valueOf(timerSeconds));
+        secondSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setTimerSeconds(true);
+            }
+        });
         contentTable.add(secondSelectBox).space(game.getPadding());
 
         Label secondLabel = new Label(game.bundle.get("timerSeconds"), game.skin, "alarm");
@@ -155,10 +173,27 @@ public class TimerScreen implements Screen {
                 .space(game.getPadding());
     }
 
-    private void startTimer() {
+    private void setTimerHours (boolean flush) {
         timerHours = Integer.parseInt(hourSelectBox.getSelected());
+        game.preferences.putInteger("timerHours", timerHours);
+    }
+
+    private void setTimerMinutes (boolean flush) {
         timerMinutes = Integer.parseInt(minuteSelectBox.getSelected());
+        game.preferences.putInteger("timerMinutes", timerMinutes);
+        if (flush) game.preferences.flush();
+    }
+
+    private void setTimerSeconds (boolean flush) {
         timerSeconds = Integer.parseInt(secondSelectBox.getSelected());
+        game.preferences.putInteger("timerSeconds", timerSeconds);
+        if (flush) game.preferences.flush();
+    }
+
+    private void startTimer() {
+        setTimerHours(false);
+        setTimerMinutes(false);
+        setTimerSeconds(false);
         timerTarget = game.dateUtilities.calculateTimerTarget(timerHours, timerMinutes, timerSeconds);
         long timerRemaining = timerTarget.getTime() - new Date().getTime();
 
@@ -172,9 +207,6 @@ public class TimerScreen implements Screen {
             secondSelectBox.setSelected(String.valueOf(timerSeconds));
         }
 
-        game.preferences.putInteger("timerHours", timerHours);
-        game.preferences.putInteger("timerMinutes", timerMinutes);
-        game.preferences.putInteger("timerSeconds", timerSeconds);
         game.preferences.putLong("timerTarget", timerTarget.getTime());
         game.preferences.putLong("timerRemaining", timerRemaining);
         game.preferences.flush();
