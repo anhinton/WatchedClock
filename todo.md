@@ -1,6 +1,8 @@
 # todo.md
       
   + App icon
+  
+  + Do an About screen with credits
       
 ## DONE
   
