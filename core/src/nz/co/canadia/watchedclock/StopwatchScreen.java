@@ -30,8 +30,6 @@ public class StopwatchScreen implements Screen {
         stopwatchStartTime = new Date(game.preferences.getLong("stopwatchStartTime", 0));
         stopwatchElapsedTime = game.preferences.getLong("stopwatchElapsedTime", 0);
 
-        String stopwatchTimeText = formatStopwatchTime(game.getStopwatchTime());
-
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         stage = new Stage(viewport);
         Table table = new Table();
@@ -41,7 +39,8 @@ public class StopwatchScreen implements Screen {
 
         Table contentTable = new Table();
 
-        stopwatchLabel = new Label(stopwatchTimeText, game.skin, "time");
+        stopwatchLabel = new Label("", game.skin, "time");
+        updateStopwatchLabel();
         contentTable.add(stopwatchLabel)
                 .colspan(2)
                 .space(game.getPadding());
@@ -84,6 +83,10 @@ public class StopwatchScreen implements Screen {
         table.add(new MenuButtons(game, "Stopwatch")).colspan(2);
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    private void updateStopwatchLabel() {
+        stopwatchLabel.setText(formatStopwatchTime(game.getStopwatchTime()));
     }
 
     private String formatStopwatchTime(long time) {
@@ -146,7 +149,8 @@ public class StopwatchScreen implements Screen {
 
     @Override
     public void resume() {
-
+        game.updateTimes();
+        updateStopwatchLabel();
     }
 
     @Override
