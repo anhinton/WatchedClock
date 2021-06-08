@@ -176,6 +176,7 @@ public class TimerScreen implements Screen {
     private void setTimerHours (boolean flush) {
         timerHours = Integer.parseInt(hourSelectBox.getSelected());
         game.preferences.putInteger("timerHours", timerHours);
+        if (flush) game.preferences.flush();
     }
 
     private void setTimerMinutes (boolean flush) {
