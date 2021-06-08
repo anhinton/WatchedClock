@@ -98,6 +98,7 @@ public class StopwatchScreen implements Screen {
     }
 
     private void resetStopwatch() {
+        game.resetStopwatch();
         stopwatchElapsedTime = 0;
         game.preferences.putLong("stopwatchElapsedTime", stopwatchElapsedTime);
         stopwatchStartTime = new Date();

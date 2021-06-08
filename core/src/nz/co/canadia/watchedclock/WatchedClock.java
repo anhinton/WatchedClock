@@ -190,6 +190,10 @@ public class WatchedClock extends Game {
 		return stopwatchTime;
 	}
 
+	public void resetStopwatch() {
+		stopwatchTime = 0;
+	}
+
 	public long getTimerRemaining() {
 		return timerRemaining;
 	}
