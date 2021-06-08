@@ -52,16 +52,6 @@ public class TimerScreen implements Screen {
 
         contentTable = new Table();
 
-        setDisplay();
-
-        table.add(contentTable).expand();
-        table.row();
-        table.add(new MenuButtons(game, "Timer")).colspan(2);
-
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    private void setDisplay() {
         long timerRemaining = game.getTimerRemaining();
         if (timerIsRunning) {
             if (timerRemaining > 0) {
@@ -76,6 +66,12 @@ public class TimerScreen implements Screen {
                 showInputBoxes();
             }
         }
+
+        table.add(contentTable).expand();
+        table.row();
+        table.add(new MenuButtons(game, "Timer")).colspan(2);
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     private void playAlarm() {
@@ -312,7 +308,6 @@ public class TimerScreen implements Screen {
     @Override
     public void resume() {
         game.updateTimes();
-        setDisplay();
     }
 
     @Override
