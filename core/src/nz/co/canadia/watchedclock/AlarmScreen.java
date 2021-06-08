@@ -44,16 +44,20 @@ public class AlarmScreen implements Screen {
                 .expand()
                 .space(game.getPadding());
 
-        if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
-            playAlarm();
-        } else {
-            showInputBoxes();
-        }
+        setDisplay();
 
         table.row();
         table.add(new MenuButtons(game, "Alarm"));
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    private void setDisplay() {
+        if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
+            playAlarm();
+        } else {
+            showInputBoxes();
+        }
     }
 
     private void showInputBoxes() {
@@ -189,7 +193,8 @@ public class AlarmScreen implements Screen {
 
     @Override
     public void resume() {
-
+        game.updateTimes();
+        setDisplay();
     }
 
     @Override
