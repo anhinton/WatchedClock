@@ -57,7 +57,14 @@ public class TimerScreen implements Screen {
             if (timerRemaining > 0) {
                 showTimer();
             } else {
-                playAlarm();
+                switch (Gdx.app.getType()) {
+                    case WebGL:
+                        permitAlarm();
+                        break;
+                    default:
+                        playAlarm();
+                        break;
+                }
             }
         } else {
             if (timerRemaining > 0) {
@@ -72,6 +79,26 @@ public class TimerScreen implements Screen {
         table.add(new MenuButtons(game, this)).colspan(2);
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    private void permitAlarm() {
+        contentTable.clear();
+
+        Label timerWaitingLabel = new Label(game.bundle.get("timerWaiting"), game.skin, "alarm");
+        contentTable.add(timerWaitingLabel).space(game.getPadding());
+        contentTable.row();
+
+        TextButton timerPlayButton = new TextButton(game.bundle.get("timerPlay"), game.skin, "control");
+        timerPlayButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                playAlarm();
+            }
+        });
+        contentTable.add(timerPlayButton)
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
+                .space(game.getPadding());
+        contentTable.row();
     }
 
     private void playAlarm() {
