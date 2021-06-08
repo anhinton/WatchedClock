@@ -80,7 +80,7 @@ public class StopwatchScreen implements Screen {
 
         table.add(contentTable).expand();
         table.row();
-        table.add(new MenuButtons(game, "Stopwatch")).colspan(2);
+        table.add(new MenuButtons(game, this)).colspan(2);
 
         Gdx.input.setInputProcessor(stage);
     }

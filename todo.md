@@ -1,8 +1,9 @@
 # todo.md
   
   + Sounds
-      - Alarm
-      - Timer
+      - ~~Alarm~~
+      - ~~Timer~~
+      - Make sound stop when switching screen
       
   + App icon
       

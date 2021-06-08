@@ -69,7 +69,7 @@ public class TimerScreen implements Screen {
 
         table.add(contentTable).expand();
         table.row();
-        table.add(new MenuButtons(game, "Timer")).colspan(2);
+        table.add(new MenuButtons(game, this)).colspan(2);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -317,6 +317,7 @@ public class TimerScreen implements Screen {
 
     @Override
     public void dispose() {
+        timerSound.stop();
         stage.dispose();
     }
 }

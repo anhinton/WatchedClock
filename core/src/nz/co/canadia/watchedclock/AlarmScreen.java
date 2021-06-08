@@ -54,7 +54,7 @@ public class AlarmScreen implements Screen {
         }
 
         table.row();
-        table.add(new MenuButtons(game, "Alarm"));
+        table.add(new MenuButtons(game, this));
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -229,6 +229,7 @@ public class AlarmScreen implements Screen {
 
     @Override
     public void dispose() {
+        alarmSound.stop();
         stage.dispose();
     }
 }
