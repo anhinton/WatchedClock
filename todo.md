@@ -1,6 +1,12 @@
 # todo.md
-
-  + Work out how to refresh time on mobile when app is resumed
   
-  + Is there a better way to do alarm time setting on mobile?
-      - Probably not
+  + Sounds
+      - Alarm
+      - Timer
+      
+  + App icon
+      
+## DONE
+
+  + ~~Work out how to refresh time on mobile when app is resumed~~
+      + ~~Game.resume and Screen.resume are the answer~~
