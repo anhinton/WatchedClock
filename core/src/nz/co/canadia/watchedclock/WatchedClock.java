@@ -32,6 +32,8 @@ public class WatchedClock extends Game {
 	private float buttonHeight;
 	private boolean stopwatchIsRunning;
 	private boolean timerIsRunning;
+	private Date alarmTime;
+	private boolean alarmIsSet;
 
 	public WatchedClock(DateUtilities dateUtilities, FontLoader fontLoader) {
 		this.dateUtilities = dateUtilities;
@@ -49,9 +51,6 @@ public class WatchedClock extends Game {
 		buttonHeight = Constants.BUTTON_HEIGHT * Constants.WORLD_WIDTH;
 
 		updateTimes();
-		// Alarm
-		Date alarmTime = new Date(preferences.getLong("alarmTime", 0));
-		boolean alarmIsSet = preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
 
 		manager.load("skin/uiskin.json", Skin.class);
 		manager.load("i18n/Bundle", I18NBundle.class);
@@ -91,6 +90,10 @@ public class WatchedClock extends Game {
 		timerSelectBoxStyle.listStyle.fontColorUnselected = Constants.SELECTBOX_FONT_COLOR;
 		skin.add("timer", timerSelectBoxStyle);
 
+		selectScreen();
+	}
+
+	private void selectScreen() {
 		Screen screen;
 		if (currentTime.after(alarmTime) && alarmIsSet) {
 			screen = new AlarmScreen(this);
@@ -119,6 +122,9 @@ public class WatchedClock extends Game {
 
 	void updateTimes() {
 		currentTime = new Date();
+		// Alarm
+		alarmTime = new Date(preferences.getLong("alarmTime", 0));
+		alarmIsSet = preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
 		// Stopwatch
 		Date stopwatchStartTime = new Date(preferences.getLong("stopwatchStartTime", 0));
 		long stopwatchElapsedTime = preferences.getLong("stopwatchElapsedTime", 0);
@@ -151,6 +157,7 @@ public class WatchedClock extends Game {
 	@Override
 	public void resume() {
 		super.resume();
+		selectScreen();
 	}
 
 	@Override
