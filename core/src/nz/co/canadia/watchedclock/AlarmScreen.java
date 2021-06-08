@@ -2,6 +2,7 @@ package nz.co.canadia.watchedclock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,8 +17,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Date;
 
+import javax.sound.midi.Soundbank;
+
 public class AlarmScreen implements Screen {
     private final Stage stage;
+    private final Sound alarmSound;
     private SelectBox<String> hourSelectBox;
     private SelectBox<String> minuteSelectBox;
     private SelectBox<String> periodSelectBox;
@@ -29,6 +33,7 @@ public class AlarmScreen implements Screen {
 
     public AlarmScreen(final WatchedClock game) {
         this.game = game;
+        alarmSound = game.manager.get("sounds/alarm.wav", Sound.class);
         alarmTime = new Date(game.preferences.getLong("alarmTime", 0));
         alarmIsSet = game.preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
 
@@ -139,6 +144,7 @@ public class AlarmScreen implements Screen {
 
     private void playAlarm() {
         contentTable.clear();
+        alarmSound.loop(1);
 
         disableAlarm();
 
@@ -156,6 +162,7 @@ public class AlarmScreen implements Screen {
         alarmStopButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                alarmSound.stop();
                 showInputBoxes();
             }
         });

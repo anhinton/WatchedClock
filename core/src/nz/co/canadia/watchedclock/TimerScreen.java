@@ -2,6 +2,7 @@ package nz.co.canadia.watchedclock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +22,7 @@ import java.util.Date;
 public class TimerScreen implements Screen {
     private final Stage stage;
     private final Table contentTable;
+    private final Sound timerSound;
     private SelectBox<String> hourSelectBox;
     private SelectBox<String> minuteSelectBox;
     private SelectBox<String> secondSelectBox;
@@ -34,6 +36,7 @@ public class TimerScreen implements Screen {
 
     public TimerScreen(final WatchedClock game) {
         this.game = game;
+        timerSound = game.manager.get("sounds/timer.wav", Sound.class);
         timerHours = game.preferences.getInteger("timerHours", 0);
         timerMinutes = game.preferences.getInteger("timerMinutes", 0);
         timerSeconds = game.preferences.getInteger("timerSeconds", 0);
@@ -77,6 +80,7 @@ public class TimerScreen implements Screen {
 
     private void playAlarm() {
         contentTable.clear();
+        timerSound.loop(1);
 
         timerIsRunning = false;
         game.setTimerRemaining(0);
@@ -98,6 +102,7 @@ public class TimerScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showInputBoxes();
+                timerSound.stop();
             }
         });
         contentTable.add(timerResetButton)

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -54,6 +55,8 @@ public class WatchedClock extends Game {
 
 		manager.load("skin/uiskin.json", Skin.class);
 		manager.load("i18n/Bundle", I18NBundle.class);
+		manager.load("sounds/alarm.wav", Sound.class);
+		manager.load("sounds/timer.wav", Sound.class);
 		fontLoader.loadTimeLabelFont(manager);
 		fontLoader.loadAlarmLabelFont(manager);
 		fontLoader.loadMenuButtonFont(manager);
