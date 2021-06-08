@@ -48,7 +48,14 @@ public class AlarmScreen implements Screen {
                 .space(game.getPadding());
 
         if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
-            playAlarm();
+            switch (Gdx.app.getType()) {
+                case WebGL:
+                    permitAlarm();
+                    break;
+                default:
+                    playAlarm();
+                    break;
+            }
         } else {
             showInputBoxes();
         }
@@ -134,6 +141,26 @@ public class AlarmScreen implements Screen {
             setAlarmButton.setText(game.bundle.get("alarmButtonDisable"));
             enableAlarm();
         }
+    }
+
+    private void permitAlarm() {
+        contentTable.clear();
+
+        Label alarmWaitingLabel = new Label(game.bundle.get("alarmWaiting"), game.skin, "alarm");
+        contentTable.add(alarmWaitingLabel).space(game.getPadding());
+        contentTable.row();
+
+        TextButton alarmPlayButton = new TextButton(game.bundle.get("alarmPlay"), game.skin, "control");
+        alarmPlayButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                playAlarm();
+            }
+        });
+        contentTable.add(alarmPlayButton)
+                .prefSize(game.getControlButtonWidth(), game.getButtonHeight())
+                .space(game.getPadding());
+        contentTable.row();
     }
 
     private void playAlarm() {
