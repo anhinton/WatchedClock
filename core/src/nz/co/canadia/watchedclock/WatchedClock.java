@@ -30,6 +30,8 @@ public class WatchedClock extends Game {
 	private float menuButtonWidth;
 	private float controlButtonWidth;
 	private float buttonHeight;
+	private boolean stopwatchIsRunning;
+	private boolean timerIsRunning;
 
 	public WatchedClock(DateUtilities dateUtilities, FontLoader fontLoader) {
 		this.dateUtilities = dateUtilities;
@@ -46,27 +48,10 @@ public class WatchedClock extends Game {
 		controlButtonWidth = Constants.CONTROL_BUTTON_WIDTH * Constants.WORLD_WIDTH;
 		buttonHeight = Constants.BUTTON_HEIGHT * Constants.WORLD_WIDTH;
 
-		currentTime = new Date();
+		updateTimes();
 		// Alarm
 		Date alarmTime = new Date(preferences.getLong("alarmTime", 0));
 		boolean alarmIsSet = preferences.getBoolean("alarmIsSet", Constants.ALARM_IS_SET_DEFAULT);
-		// Stopwatch
-		Date stopwatchStartTime = new Date(preferences.getLong("stopwatchStartTime", 0));
-		long stopwatchElapsedTime = preferences.getLong("stopwatchElapsedTime", 0);
-		boolean stopwatchIsRunning = preferences.getBoolean("stopwatchIsRunning", false);
-		if (stopwatchIsRunning) {
-			stopwatchTime = currentTime.getTime() - stopwatchStartTime.getTime() + stopwatchElapsedTime;
-		} else {
-			stopwatchTime = stopwatchElapsedTime;
-		}
-		// Timer
-		Date timerTarget = new Date(preferences.getLong("timerTarget", 0));
-		boolean timerIsRunning = preferences.getBoolean("timerIsRunning", false);
-		if (timerIsRunning) {
-			timerRemaining = timerTarget.getTime() - new Date().getTime();
-		} else {
-			timerRemaining = preferences.getLong("timerRemaining", 0);
-		}
 
 		manager.load("skin/uiskin.json", Skin.class);
 		manager.load("i18n/Bundle", I18NBundle.class);
@@ -132,6 +117,27 @@ public class WatchedClock extends Game {
 		this.setScreen(screen);
 	}
 
+	void updateTimes() {
+		currentTime = new Date();
+		// Stopwatch
+		Date stopwatchStartTime = new Date(preferences.getLong("stopwatchStartTime", 0));
+		long stopwatchElapsedTime = preferences.getLong("stopwatchElapsedTime", 0);
+		stopwatchIsRunning = preferences.getBoolean("stopwatchIsRunning", false);
+		if (stopwatchIsRunning) {
+			stopwatchTime = currentTime.getTime() - stopwatchStartTime.getTime() + stopwatchElapsedTime;
+		} else {
+			stopwatchTime = stopwatchElapsedTime;
+		}
+		// Timer
+		Date timerTarget = new Date(preferences.getLong("timerTarget", 0));
+		timerIsRunning = preferences.getBoolean("timerIsRunning", false);
+		if (timerIsRunning) {
+			timerRemaining = timerTarget.getTime() - new Date().getTime();
+		} else {
+			timerRemaining = preferences.getLong("timerRemaining", 0);
+		}
+	}
+
 	@Override
 	public void render () {
 		super.render(); // important!
@@ -140,13 +146,11 @@ public class WatchedClock extends Game {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		currentTime = new Date();
 	}
 
 	@Override
 	public void resume() {
 		super.resume();
-		currentTime = new Date();
 	}
 
 	@Override
