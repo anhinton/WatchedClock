@@ -72,6 +72,12 @@ public class AlarmScreen implements Screen {
         }
         hourSelectBox.setItems(hourStringArray);
         hourSelectBox.setSelected(game.dateUtilities.formatDate("h", alarmTime));
+        hourSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setAlarmTime(true);
+            }
+        });
         contentTable.add(hourSelectBox).space(game.getPadding());
 
         minuteSelectBox = new SelectBox<>(game.skin, "alarm");
@@ -81,11 +87,23 @@ public class AlarmScreen implements Screen {
         }
         minuteSelectBox.setItems(minuteStringArray);
         minuteSelectBox.setSelected(game.dateUtilities.formatDate("mm", alarmTime));
+        minuteSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setAlarmTime(true);
+            }
+        });
         contentTable.add(minuteSelectBox).space(game.getPadding());
 
         periodSelectBox = new SelectBox<>(game.skin, "alarm");
         periodSelectBox.setItems(game.bundle.get("alarmAm"), game.bundle.get("alarmPm"));
         periodSelectBox.setSelected(game.dateUtilities.formatDate("a", alarmTime));
+        periodSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setAlarmTime(true);
+            }
+        });
         contentTable.add(periodSelectBox).space(game.getPadding());
         contentTable.row();
 
@@ -112,17 +130,17 @@ public class AlarmScreen implements Screen {
     private void toggleAlarm() {
         if (alarmIsSet) {
             setAlarmButton.setText(game.bundle.get("alarmButtonSet"));
-            unsetAlarm();
+            disableAlarm();
         } else {
             setAlarmButton.setText(game.bundle.get("alarmButtonDisable"));
-            setAlarmTime();
+            enableAlarm();
         }
     }
 
     private void playAlarm() {
         contentTable.clear();
 
-        unsetAlarm();
+        disableAlarm();
 
         Label alarmPlayingLabel = new Label(game.bundle.get("alarmPlaying"), game.skin, "alarm");
         contentTable.add(alarmPlayingLabel).space(game.getPadding());
@@ -147,7 +165,14 @@ public class AlarmScreen implements Screen {
         contentTable.row();
     }
 
-    private void setAlarmTime() {
+    private void enableAlarm() {
+        setAlarmTime(false);
+        alarmIsSet = true;
+        game.preferences.putBoolean("alarmIsSet", alarmIsSet);
+        game.preferences.flush();
+    }
+
+    private void setAlarmTime(boolean flush) {
         String alarmText = game.dateUtilities.formatDate(Constants.DATE_FORMAT, new Date())
                 + " " + hourSelectBox.getSelected()
                 + ":" + minuteSelectBox.getSelected()
@@ -156,13 +181,13 @@ public class AlarmScreen implements Screen {
         if (alarmTime.before(game.getCurrentTime())) {
             alarmTime = game.dateUtilities.addDays(alarmTime, 1);
         }
-        alarmIsSet = true;
         game.preferences.putLong("alarmTime", alarmTime.getTime());
-        game.preferences.putBoolean("alarmIsSet", alarmIsSet);
-        game.preferences.flush();
+        if (flush) {
+            game.preferences.flush();
+        }
     }
 
-    private void unsetAlarm() {
+    private void disableAlarm() {
         alarmIsSet = false;
         game.preferences.putBoolean("alarmIsSet", alarmIsSet);
         game.preferences.flush();
