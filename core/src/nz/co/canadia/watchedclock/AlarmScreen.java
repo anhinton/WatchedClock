@@ -214,7 +214,7 @@ public class AlarmScreen implements Screen {
 
     @Override
     public void pause() {
-
+        alarmSound.stop();
     }
 
     @Override

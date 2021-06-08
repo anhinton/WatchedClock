@@ -302,7 +302,7 @@ public class TimerScreen implements Screen {
 
     @Override
     public void pause() {
-
+        timerSound.stop();
     }
 
     @Override
