@@ -1,10 +1,10 @@
 # todo.md
       
   + App icon
-  
-  + Do an About screen with credits
       
 ## DONE
+  
+  + ~~Do an About screen with credits~~
   
   + ~~Sounds~~
       - ~~Alarm~~
