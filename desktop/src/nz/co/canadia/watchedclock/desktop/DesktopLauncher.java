@@ -12,6 +12,9 @@ public class DesktopLauncher {
 		config.setTitle(Constants.GAME_NAME);
 		config.setWindowedMode(Constants.DESKTOP_WIDTH, Constants.DESKTOP_HEIGHT);
 		config.setResizable(false);
+		config.setWindowIcon("desktopIcons/icon_128.png",
+				"desktopIcons/icon_32.png",
+				"desktopIcons/icon_16.png");
 
 		new Lwjgl3Application(new WatchedClock(new DesktopDateUtilities(), new DesktopFontloader()), config);
 	}
