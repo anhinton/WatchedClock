@@ -13,6 +13,7 @@ public class AndroidFontLoader implements FontLoader {
 
     public AndroidFontLoader() {
         resolver = new InternalFileHandleResolver();
+        FreeTypeFontGenerator.setMaxTextureSize(2048);
     }
 
     private void setLoader(AssetManager manager) {

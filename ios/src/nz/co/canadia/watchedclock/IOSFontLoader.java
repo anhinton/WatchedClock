@@ -13,6 +13,7 @@ public class IOSFontLoader implements FontLoader {
 
     public IOSFontLoader() {
         resolver = new InternalFileHandleResolver();
+        FreeTypeFontGenerator.setMaxTextureSize(2048);
     }
 
     private void setLoader(AssetManager manager) {
