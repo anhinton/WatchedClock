@@ -1,15 +1,18 @@
 package nz.co.canadia.watchedclock;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -42,19 +45,30 @@ public class AlarmScreen implements Screen {
         table.pad(game.getPadding());
         stage.addActor(table);
 
+        ImageButton infoButton = new ImageButton(game.skin, "info");
+        infoButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new InfoScreen(game, AlarmScreen.this.getClass().getSimpleName()));
+                dispose();
+            }
+        });
+        table.add(infoButton)
+                .align(Align.right)
+                .prefSize(game.getButtonHeight())
+                .space(game.getPadding());
+        table.row();
+
         contentTable = new Table();
         table.add(contentTable)
                 .expand()
                 .space(game.getPadding());
 
         if (game.getCurrentTime().after(alarmTime) && alarmIsSet) {
-            switch (Gdx.app.getType()) {
-                case WebGL:
-                    permitAlarm();
-                    break;
-                default:
-                    playAlarm();
-                    break;
+            if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
+                permitAlarm();
+            } else {
+                playAlarm();
             }
         } else {
             showInputBoxes();

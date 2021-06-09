@@ -1,11 +1,13 @@
 package nz.co.canadia.watchedclock;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -50,6 +52,20 @@ public class TimerScreen implements Screen {
         table.pad(game.getPadding());
         stage.addActor(table);
 
+        ImageButton infoButton = new ImageButton(game.skin, "info");
+        infoButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new InfoScreen(game, TimerScreen.this.getClass().getSimpleName()));
+                dispose();
+            }
+        });
+        table.add(infoButton)
+                .align(Align.right)
+                .prefSize(game.getButtonHeight())
+                .space(game.getPadding());
+        table.row();
+
         contentTable = new Table();
 
         long timerRemaining = game.getTimerRemaining();
@@ -57,13 +73,10 @@ public class TimerScreen implements Screen {
             if (timerRemaining > 0) {
                 showTimer();
             } else {
-                switch (Gdx.app.getType()) {
-                    case WebGL:
-                        permitAlarm();
-                        break;
-                    default:
-                        playAlarm();
-                        break;
+                if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
+                    permitAlarm();
+                } else {
+                    playAlarm();
                 }
             }
         } else {
@@ -76,7 +89,7 @@ public class TimerScreen implements Screen {
 
         table.add(contentTable).expand();
         table.row();
-        table.add(new MenuButtons(game, this)).colspan(2);
+        table.add(new MenuButtons(game, this));
 
         Gdx.input.setInputProcessor(stage);
     }

@@ -82,4 +82,21 @@ public class DesktopFontloader implements FontLoader {
     public BitmapFont getBoxListFont(AssetManager manager) {
         return manager.get("fonts/InconsolataBoxList.ttf", BitmapFont.class);
     }
+
+    @Override
+    public void loadCreditsLabelFont(AssetManager manager) {
+        setLoader(manager);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter creditsLabelFont =
+                new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        creditsLabelFont.fontFileName = "fonts/Inconsolata-VariableFont_wdth,wght.ttf";
+        creditsLabelFont.fontParameters.size =
+                MathUtils.round(Constants.CREDITS_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
+        creditsLabelFont.fontParameters.characters = Constants.CHARACTERS;
+        manager.load("fonts/InconsolataCreditsLabel.ttf", BitmapFont.class, creditsLabelFont);
+    }
+
+    @Override
+    public BitmapFont getCreditsLabelFont(AssetManager manager) {
+        return manager.get("fonts/InconsolataCreditsLabel.ttf", BitmapFont.class);
+    }
 }

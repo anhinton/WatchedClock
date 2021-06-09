@@ -2,6 +2,7 @@ package nz.co.canadia.watchedclock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class Constants {
     public static final String GAME_NAME = "A Watched Clock Never Boils";
@@ -25,12 +26,14 @@ public class Constants {
     public static final float BOX_LIST_FONT_SIZE = .075f;
     public static final float MENU_BUTTON_FONT_SIZE = .058f;
     public static final float ALARM_LABEL_FONT_SIZE = .058f;
+    public static final float CREDITS_LABEL_FONT_SIZE = .04f;
     public static final float BUTTON_SHADOW_SIZE = .005f;
     public static final float UI_PADDING = .03f;
     public static final float MENU_BUTTON_WIDTH = .2f;
     public static final float CONTROL_BUTTON_WIDTH = .4f;
     public static final float BUTTON_HEIGHT = .1f;
     public static final float INFO_ICON_SIZE = .058f;
+    public static final String CHARACTERS = FreeTypeFontGenerator.DEFAULT_CHARS + "\u2022";
 
     public static final String CLOCK_TIME_FORMAT = "h:mm:ss a";
     public static final String SHORT_TIME_FORMAT = "h:mm a";

@@ -2,10 +2,12 @@ package nz.co.canadia.watchedclock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -16,7 +18,7 @@ public class ClockScreen implements Screen {
     private final Label clockLabel;
     private final WatchedClock game;
 
-    public ClockScreen(WatchedClock game) {
+    public ClockScreen(final WatchedClock game) {
         this.game = game;
 
         Viewport viewport = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
@@ -27,6 +29,13 @@ public class ClockScreen implements Screen {
         stage.addActor(table);
 
         ImageButton infoButton = new ImageButton(game.skin, "info");
+        infoButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new InfoScreen(game, ClockScreen.this.getClass().getSimpleName()));
+                dispose();
+            }
+        });
         table.add(infoButton)
                 .align(Align.right)
                 .prefSize(game.getButtonHeight())

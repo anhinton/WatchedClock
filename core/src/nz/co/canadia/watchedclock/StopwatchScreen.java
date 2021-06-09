@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -36,6 +37,20 @@ public class StopwatchScreen implements Screen {
         table.setFillParent(true);
         table.pad(game.getPadding());
         stage.addActor(table);
+
+        ImageButton infoButton = new ImageButton(game.skin, "info");
+        infoButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new InfoScreen(game, StopwatchScreen.this.getClass().getSimpleName()));
+                dispose();
+            }
+        });
+        table.add(infoButton)
+                .align(Align.right)
+                .prefSize(game.getButtonHeight())
+                .space(game.getPadding());
+        table.row();
 
         Table contentTable = new Table();
 
@@ -80,7 +95,7 @@ public class StopwatchScreen implements Screen {
 
         table.add(contentTable).expand();
         table.row();
-        table.add(new MenuButtons(game, this)).colspan(2);
+        table.add(new MenuButtons(game, this));
 
         Gdx.input.setInputProcessor(stage);
     }

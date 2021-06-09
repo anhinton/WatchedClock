@@ -19,4 +19,8 @@ public interface FontLoader {
     void loadBoxListFont(AssetManager manager);
 
     BitmapFont getBoxListFont(AssetManager manager);
+
+    void loadCreditsLabelFont(AssetManager manager);
+
+    BitmapFont getCreditsLabelFont(AssetManager manager);
 }
