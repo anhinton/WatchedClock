@@ -34,6 +34,7 @@ public class Constants {
     public static final float BUTTON_HEIGHT = .1f;
     public static final float INFO_ICON_SIZE = .058f;
     public static final String CHARACTERS = FreeTypeFontGenerator.DEFAULT_CHARS + "\u2022";
+    public static final String TIME_CHARACTERS = "1234567890.:AMP";
 
     public static final String CLOCK_TIME_FORMAT = "h:mm:ss a";
     public static final String SHORT_TIME_FORMAT = "h:mm a";

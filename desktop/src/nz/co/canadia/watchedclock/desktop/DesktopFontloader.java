@@ -30,6 +30,7 @@ public class DesktopFontloader implements FontLoader {
         FreetypeFontLoader.FreeTypeFontLoaderParameter timeLabelFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         timeLabelFont.fontFileName = "fonts/Inconsolata-VariableFont_wdth,wght.ttf";
         timeLabelFont.fontParameters.size = MathUtils.round(Constants.TIME_LABEL_FONT_SIZE * Constants.WORLD_WIDTH);
+        timeLabelFont.fontParameters.characters = Constants.TIME_CHARACTERS;
         manager.load("fonts/InconsolataTimeLabel.ttf", BitmapFont.class, timeLabelFont);
     }
 
