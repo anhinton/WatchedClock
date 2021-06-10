@@ -1,24 +1,4 @@
 # todo.md
-
-  + Release build
-      - ~~Bump version to 2021.06.10~~
-          - ~~build.gradle~~
-          - ~~Android build.gradle~~
-          - ~~iOS robovm.properties~~
-      - ~~Android~~
-          - ~~Add Skin excludes to proguard rules~~
-          - ~~AAB~~
-          - ~~APK~~
-      - Desktop
-          - ~~JAR~~
-          - Pack Linux
-          - ~~Pack MacOS~~
-          - ~~Pack Windows~~
-      - ~~Html~~
-          - ~~Comment out superDev button~~
-          - ~~Build dist~~
-      - ~~iOS~~
-          - ~~IPA~~
           
   + Store pages
       - itch.io
@@ -57,6 +37,26 @@
           - Credits
       
 ## DONE
+
+  + ~~Release build~~
+      - ~~Bump version to 2021.06.10~~
+          - ~~build.gradle~~
+          - ~~Android build.gradle~~
+          - ~~iOS robovm.properties~~
+      - ~~Android~~
+          - ~~Add Skin excludes to proguard rules~~
+          - ~~AAB~~
+          - ~~APK~~
+      - ~~Desktop~~
+          - ~~JAR~~
+          - ~~Pack Linux~~
+          - ~~Pack MacOS~~
+          - ~~Pack Windows~~
+      - ~~Html~~
+          - ~~Comment out superDev button~~
+          - ~~Build dist~~
+      - ~~iOS~~
+          - ~~IPA~~
 
   + ~~Resolve proguard problems~~
       - ~~Can't solve current screen using screen.getClass().getSimpleName() because of 
