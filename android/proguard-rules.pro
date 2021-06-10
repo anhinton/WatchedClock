@@ -40,3 +40,8 @@
    boolean reportFixture(long);
    float   reportRayFixture(long, float, float, float, float, float);
 }
+
+# Required for loading Skin from JSON
+-keep class com.badlogic.gdx.graphics.g2d.BitmapFont
+-keep class com.badlogic.gdx.graphics.Color
+-keep class com.badlogic.gdx.scenes.scene2d.ui.**{ *; }

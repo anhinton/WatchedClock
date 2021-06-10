@@ -1,11 +1,12 @@
 # todo.md
 
   + Release build
-      - Bump version to 2021.06.10
-          - core
-          - Android
-          - iOS
+      - ~~Bump version to 2021.06.10~~
+          - ~~build.gradle~~
+          - ~~Android build.gradle~~
+          - ~~iOS robovm.properties~~
       - Android
+          - ~~Add Skin excludes to proguard rules~~
           - AAB
           - APK
       - Desktop
