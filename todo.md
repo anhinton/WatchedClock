@@ -1,4 +1,58 @@
 # todo.md
+
+  + Release build
+      - Bump version to 2021.06.10
+          - core
+          - Android
+          - iOS
+      - Android
+          - AAB
+          - APK
+      - Desktop
+          - JAR
+          - Pack Linux
+          - Pack MacOS
+          - Pack Windows
+      - Html
+          - Comment out superDev button
+      - iOS
+          - IPA
+          
+  + Store pages
+      - itch.io
+          - Cover image 630x500
+          - Short description
+          - Description
+          - Screenshots
+          - Upload
+              - APK
+              - JAR
+              - Windows
+              - Linux
+              - MacOS
+      - Google Play Store
+          - Short description
+          - Full description
+          - App icon
+          - Feature graphic 1,024 px by 500 px
+          - Screenshots
+              - Phone
+              - Tablet 7 inch
+              - Tablet 10 inch
+      - Apple App Store
+          - Description
+          - Keywords
+          - Version
+      - https://watchedclock.canadia.co.nz/
+          - Cover image
+          - META data
+          - itch.io embed
+          - Description
+          - Store links
+              - itch.io
+              - App Store
+              - Play Store
+          - Credits
       
 ## DONE
       
