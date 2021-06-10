@@ -5,17 +5,18 @@
           - ~~build.gradle~~
           - ~~Android build.gradle~~
           - ~~iOS robovm.properties~~
-      - Android
+      - ~~Android~~
           - ~~Add Skin excludes to proguard rules~~
-          - AAB
-          - APK
+          - ~~AAB~~
+          - ~~APK~~
       - Desktop
-          - JAR
+          - ~~JAR~~
           - Pack Linux
           - Pack MacOS
-          - Pack Windows
-      - Html
-          - Comment out superDev button
+          - ~~Pack Windows~~
+      - ~~Html~~
+          - ~~Comment out superDev button~~
+          - ~~Build dist~~
       - iOS
           - IPA
           
