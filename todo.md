@@ -12,13 +12,13 @@
       - Desktop
           - ~~JAR~~
           - Pack Linux
-          - Pack MacOS
+          - ~~Pack MacOS~~
           - ~~Pack Windows~~
       - ~~Html~~
           - ~~Comment out superDev button~~
           - ~~Build dist~~
-      - iOS
-          - IPA
+      - ~~iOS~~
+          - ~~IPA~~
           
   + Store pages
       - itch.io
