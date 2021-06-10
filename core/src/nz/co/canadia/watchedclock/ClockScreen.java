@@ -32,7 +32,7 @@ public class ClockScreen implements Screen {
         infoButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new InfoScreen(game, ClockScreen.this.getClass().getSimpleName()));
+                game.setScreen(new InfoScreen(game, "ClockScreen"));
                 dispose();
             }
         });
@@ -51,7 +51,7 @@ public class ClockScreen implements Screen {
                 .space(game.getPadding());
         table.row();
 
-        table.add(new MenuButtons(game, this));
+        table.add(new MenuButtons(game, "ClockScreen"));
 
         Gdx.input.setInputProcessor(stage);
     }

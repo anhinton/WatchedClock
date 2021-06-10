@@ -56,6 +56,10 @@
           - Credits
       
 ## DONE
+
+  + ~~Resolve proguard problems~~
+      - ~~Can't solve current screen using screen.getClass().getSimpleName() because of 
+        proguard obfuscation~~
       
   + ~~App icon~~
   

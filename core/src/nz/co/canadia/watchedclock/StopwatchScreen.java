@@ -42,7 +42,7 @@ public class StopwatchScreen implements Screen {
         infoButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new InfoScreen(game, StopwatchScreen.this.getClass().getSimpleName()));
+                game.setScreen(new InfoScreen(game, "StopwatchScreen"));
                 dispose();
             }
         });
@@ -95,7 +95,7 @@ public class StopwatchScreen implements Screen {
 
         table.add(contentTable).expand();
         table.row();
-        table.add(new MenuButtons(game, this));
+        table.add(new MenuButtons(game, "StopwatchScreen"));
 
         Gdx.input.setInputProcessor(stage);
     }

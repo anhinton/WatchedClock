@@ -134,14 +134,19 @@ public class WatchedClock extends Game {
 
 	private void selectScreen() {
 		Screen screen;
+		String screenName;
 		if (currentTime.after(alarmTime) && alarmIsSet) {
 			screen = new AlarmScreen(this);
+			screenName = "AlarmScreen";
 		} else if (timerIsRunning && timerRemaining <= 0) {
 			screen = new TimerScreen(this);
+			screenName = "TimerScreen";
 		} else if (stopwatchIsRunning) {
 			screen = new StopwatchScreen(this);
+			screenName = "StopwatchScreen";
 		} else {
-			switch (preferences.getString("currentScreen", "ClockScreen")) {
+			screenName = preferences.getString("currentScreen", "ClockScreen");
+			switch (screenName) {
 				case "AlarmScreen":
 					screen = new AlarmScreen(this);
 					break;
@@ -156,7 +161,7 @@ public class WatchedClock extends Game {
 					break;
 			}
 		}
-		this.setScreen(screen);
+		this.setScreen(screen, screenName);
 	}
 
 	void updateTimes() {
@@ -198,18 +203,17 @@ public class WatchedClock extends Game {
 		super.resume();
 		selectScreen();
 	}
-
-	@Override
-	public void setScreen(Screen screen) {
-		super.setScreen(screen);
-		preferences.putString("currentScreen", screen.getClass().getSimpleName());
-		preferences.flush();
-	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
 		manager.dispose();
+	}
+
+	public void setScreen(Screen screen, String screenName) {
+		super.setScreen(screen);
+		preferences.putString("currentScreen", screenName);
+		preferences.flush();
 	}
 
 	public int getPadding() {

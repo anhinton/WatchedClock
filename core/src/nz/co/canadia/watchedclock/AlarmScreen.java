@@ -49,7 +49,7 @@ public class AlarmScreen implements Screen {
         infoButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new InfoScreen(game, AlarmScreen.this.getClass().getSimpleName()));
+                game.setScreen(new InfoScreen(game, "AlarmScreen"));
                 dispose();
             }
         });
@@ -75,7 +75,7 @@ public class AlarmScreen implements Screen {
         }
 
         table.row();
-        table.add(new MenuButtons(game, this));
+        table.add(new MenuButtons(game, "AlarmScreen"));
 
         Gdx.input.setInputProcessor(stage);
     }

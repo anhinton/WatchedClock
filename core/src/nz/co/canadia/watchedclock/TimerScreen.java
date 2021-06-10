@@ -56,7 +56,7 @@ public class TimerScreen implements Screen {
         infoButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new InfoScreen(game, TimerScreen.this.getClass().getSimpleName()));
+                game.setScreen(new InfoScreen(game, "TimerScreen"));
                 dispose();
             }
         });
@@ -89,7 +89,7 @@ public class TimerScreen implements Screen {
 
         table.add(contentTable).expand();
         table.row();
-        table.add(new MenuButtons(game, this));
+        table.add(new MenuButtons(game, "TimerScreen"));
 
         Gdx.input.setInputProcessor(stage);
     }
