@@ -2,39 +2,48 @@
           
   + Store pages
       - itch.io
-          - Cover image 630x500
-          - Short description
-          - Description
-          - Screenshots
-          - Upload
-              - APK
-              - JAR
-              - Windows
-              - Linux
-              - MacOS
+          - ~~Cover image 630x500~~
+          - ~~Short description~~
+          - ~~Description~~
+          - ~~Screenshots~~
+          - ~~Upload~~
+              - ~~APK~~
+              - ~~JAR~~
+              - ~~Windows~~
+              - ~~Linux~~
+              - ~~MacOS~~
+          - Publish
       - Google Play Store
-          - Short description
-          - Full description
-          - App icon
-          - Feature graphic 1,024 px by 500 px
-          - Screenshots
-              - Phone
-              - Tablet 7 inch
-              - Tablet 10 inch
+          - ~~Short description~~
+          - ~~Full description~~
+          - ~~App icon~~
+          - ~~Feature graphic 1,024 px by 500 px~~
+          - ~~Screenshots~~
+              - ~~Phone~~
+              - ~~Tablet 7 inch~~
+              - ~~Tablet 10 inch~~
+          - ~~Submit for review~~
+          - Publish
       - Apple App Store
-          - Description
-          - Keywords
-          - Version
+          - ~~Screenshots~~
+              - ~~iPhone 5.5 inch~~
+              - ~~iPhone 6.5 inch~~
+              - ~~iPad 12.9 inch~~
+          - ~~Description~~
+          - ~~Keywords~~
+          - ~~Version~~
+          - ~~Submit for review~~
+          - Publish
       - https://watchedclock.canadia.co.nz/
-          - Cover image
-          - META data
+          - ~~Cover image~~
+          - ~~META data~~
           - itch.io embed
-          - Description
+          - ~~Description~~
           - Store links
               - itch.io
               - App Store
               - Play Store
-          - Credits
+          - ~~Credits~~
       
 ## DONE
 
