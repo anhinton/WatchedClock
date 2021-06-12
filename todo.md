@@ -12,6 +12,7 @@
               - ~~Windows~~
               - ~~Linux~~
               - ~~MacOS~~
+		  - Link to Google Play Store
           - Publish
       - Google Play Store
           - ~~Short description~~
@@ -24,7 +25,7 @@
               - ~~Tablet 10 inch~~
           - ~~Submit for review~~
           - Publish
-      - Apple App Store
+      - ~~Apple App Store~~
           - ~~Screenshots~~
               - ~~iPhone 5.5 inch~~
               - ~~iPhone 6.5 inch~~
@@ -33,7 +34,7 @@
           - ~~Keywords~~
           - ~~Version~~
           - ~~Submit for review~~
-          - Publish
+          - **REJECTED BY APPLE**
       - https://watchedclock.canadia.co.nz/
           - ~~Cover image~~
           - ~~META data~~
@@ -41,9 +42,10 @@
           - ~~Description~~
           - Store links
               - itch.io
-              - App Store
               - Play Store
           - ~~Credits~~
+	  - https://canadia.co.nz
+	      - Link to https://watchedclock.canadia.co.nz/
       
 ## DONE
 
