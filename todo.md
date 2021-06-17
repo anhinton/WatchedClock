@@ -1,7 +1,11 @@
 # todo.md
+
+  + All done!
+      
+## DONE
           
-  + Store pages
-      - itch.io
+  + ~~Store pages~~
+      - ~~itch.io~~
           - ~~Cover image 630x500~~
           - ~~Short description~~
           - ~~Description~~
@@ -12,9 +16,9 @@
               - ~~Windows~~
               - ~~Linux~~
               - ~~MacOS~~
-		  - Link to Google Play Store
-          - Publish
-      - Google Play Store
+		  - ~~Link to Google Play Store~~
+          - ~~Publish~~
+      - ~~Google Play Store~~
           - ~~Short description~~
           - ~~Full description~~
           - ~~App icon~~
@@ -24,7 +28,7 @@
               - ~~Tablet 7 inch~~
               - ~~Tablet 10 inch~~
           - ~~Submit for review~~
-          - Publish
+          - ~~Publish~~
       - ~~Apple App Store~~
           - ~~Screenshots~~
               - ~~iPhone 5.5 inch~~
@@ -35,19 +39,17 @@
           - ~~Version~~
           - ~~Submit for review~~
           - **REJECTED BY APPLE**
-      - https://watchedclock.canadia.co.nz/
+      - ~~https://watchedclock.canadia.co.nz/~~
           - ~~Cover image~~
           - ~~META data~~
-          - itch.io embed
+          - ~~itch.io embed~~
           - ~~Description~~
-          - Store links
-              - itch.io
-              - Play Store
+          - ~~Store links~~
+              - ~~itch.io~~
+              - ~~Play Store~~
           - ~~Credits~~
-	  - https://canadia.co.nz
-	      - Link to https://watchedclock.canadia.co.nz/
-      
-## DONE
+	  - ~~https://canadia.co.nz~~
+	      - ~~Link to https://watchedclock.canadia.co.nz/~~
 
   + ~~Release build~~
       - ~~Bump version to 2021.06.10~~
